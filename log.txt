@@ -1,0 +1,2178 @@
+# In[1069]:
+No. of days in train+validation set = 1008
+# In[1070]:
+# In[1071]:
+# In[1072]:
+# In[1073]:
+# In[1074]:
+# In[1075]:
+# In[1076]:
+# In[1077]:
+# In[1078]:
+# In[1079]:
+# In[1080]:
+# In[1081]:
+# In[1082]:
+# In[1083]:
+# In[1084]:
+# In[1085]: 3
+C:\Users\despo\PycharmProjects\pythonProjectStocks
+# In[1085]: 5
+# In[1086]:
+# In[1087]:
+Predicting on day 1008, date 2017-01-03 00:00:00, with forecast horizon H = 21
+# In[1088]:
+############################################################################
+train.shape = (756, 14)
+val.shape = (252, 14)
+train_val.shape = (1008, 14)
+test.shape = (21, 14)
+# In[1089]:
+Get error metrics on validation set before hyperparameter tuning:
+RMSE = 2.182
+MAPE = 1.898%
+MAE = 1.902%
+ACCURACY = 0.527%
+# In[1090]:
+# In[1090]:
+# In[1091]:
+Do prediction on test set:
+RMSE = 2.519
+MAPE = 2.160%
+MAE = 2.442
+ACCURACY = 0.400
+# In[1092]:
+# In[1093]:
+# In[1094]:
+# In[1095]:
+param =  30
+param =  31
+param =  32
+param =  33
+param =  34
+param =  35
+param =  36
+param =  37
+param =  38
+param =  39
+param =  40
+param =  41
+param =  42
+param =  43
+param =  44
+param =  45
+param =  46
+param =  47
+param =  48
+param =  49
+param =  50
+param =  51
+param =  52
+param =  53
+param =  54
+param =  55
+param =  56
+param =  57
+param =  58
+param =  59
+param =  60
+Minutes taken = 54.93
+# In[1096]:
+# In[1097]:
+min RMSE = 2.095
+optimum params = 
+n_estimators_opt:  42  max_depth_opt:  3
+min MAPE = 1.821%
+optimum params = 
+n_estimators_opt:  44  max_depth_opt:  7
+max ACCURACY = 0.569%
+optimum params = 
+n_estimators_opt:  47  max_depth_opt:  9
+# In[1099]:
+Minutes taken = 46.42
+# In[1100]:
+# In[1101]:
+min RMSE = 2.014
+optimum params = 
+learning_rate:  0.4  min_child_weight:  9
+# In[1102]:
+min MAPE = 1.724%
+optimum params = 
+learning_rate:  0.4  min_child_weight:  9
+max ACCURACY = 0.556%
+optimum params = 
+learning_rate:  0.2  min_child_weight:  11
+# In[1103]:
+Minutes taken = 0.42
+# In[1104]:
+# In[1105]:
+min RMSE = 2.433
+optimum params = 
+subsample:  0.5  gamma:  0.0
+min MAPE = 2.158%
+optimum params = 
+subsample:  0.5  gamma:  0.0
+max ACCURACY = 0.506%
+optimum params = 
+subsample:  0.1  gamma:  0.0
+# In[1107]:
+Minutes taken = 0.09
+# In[1108]:
+# In[1109]:
+min RMSE = 2.285
+optimum params = 
+colsample_bytree:  0.5  colsample_bylevel:  1
+min MAPE = 1.989%
+optimum params = 
+colsample_bytree:  0.5  colsample_bylevel:  1
+max ACCURACY = 0.508%
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+# In[1111]:
+Get error metrics on validation set after hyperparameter tuning
+n_estimators_opt_param:  [42, 44, 47]
+max_depth_opt_param:  [9, 3, 7]
+learning_rate_opt_param:  [0.4, 0.2]
+min_child_weight_opt_param:  [9, 11]
+subsample_opt_param:  [0.5, 0.1]
+colsample_bytree_opt_param:  [0.5, 1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0]
+Force selection:
+n_estimators_opt_param:  [42, 44, 47]
+max_depth_opt_param:  [9, 3, 7]
+learning_rate_opt_param:  [0.4, 0.2]
+min_child_weight_opt_param:  [9, 11]
+subsample_opt_param:  [0.5, 0.1]
+colsample_bytree_opt_param:  [0.5, 1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0]
+tuning: RMSE on test set = 2.852
+tuning: MAPE on test set = 2.507%
+tuning: MAE on test set = 2.521%
+tuning: ACCURACY on test set = 0.494%
+tuning: RMSE on test set = 2.477
+tuning: MAPE on test set = 2.130%
+tuning: MAE on test set = 2.146%
+tuning: ACCURACY on test set = 0.523%
+tuning: RMSE on test set = 2.281
+tuning: MAPE on test set = 1.936%
+tuning: MAE on test set = 1.950%
+tuning: ACCURACY on test set = 0.527%
+tuning: RMSE on test set = 5.860
+tuning: MAPE on test set = 4.741%
+tuning: MAE on test set = 4.810%
+tuning: ACCURACY on test set = 0.542%
+tuning: RMSE on test set = 3.243
+tuning: MAPE on test set = 2.814%
+tuning: MAE on test set = 2.865%
+tuning: ACCURACY on test set = 0.544%
+tuning: RMSE on test set = 2.330
+tuning: MAPE on test set = 2.061%
+tuning: MAE on test set = 2.064%
+tuning: ACCURACY on test set = 0.548%
+tuning: RMSE on test set = 2.453
+tuning: MAPE on test set = 2.177%
+tuning: MAE on test set = 2.162%
+tuning: ACCURACY on test set = 0.552%
+RMSE = 2.453
+MAPE = 2.177%
+MAE = 2.162
+ACCURACY = 0.552
+n_estimators_opt:  44
+max_depth_opt:  9
+learning_rate_opt:  0.2
+min_child_weight_opt:  9
+subsample_opt:  0.1
+colsample_bytree_opt:  1.0
+colsample_bylevel_opt:  1
+gamma_opt:  0.0
+# In[1112]:
+# In[1113]:
+Set param:
+Do prediction on test set
+===> RMSE = 1.286
+===> MAPE = 0.974%
+===> MAE = 1.101
+===> ACCURACY = 0.400
+# In[1114]:
+# In[1115]:
+# In[1116]:
+# In[1117]:
+# In[1118]:
+# In[1119]:
+# In[1120]:
+Total minutes taken = 109.71
+# In[1121]:
+Predicting on day 1008, date 2017-01-03, with forecast horizon H = 21
+# In[1122]:
+# In[1123]:
+# In[1124]:
+############################################################################
+train.shape = (756, 14)
+val.shape = (252, 14)
+train_val.shape = (1008, 14)
+test.shape = (21, 14)
+# In[1089]:
+Get error metrics on validation set before hyperparameter tuning:
+RMSE = 1.859
+MAPE = 1.505%
+MAE = 1.603%
+ACCURACY = 0.496%
+# In[1090]:
+# In[1090]:
+# In[1091]:
+Do prediction on test set:
+RMSE = 1.743
+MAPE = 1.340%
+MAE = 1.567
+ACCURACY = 0.650
+# In[1092]:
+# In[1093]:
+# In[1094]:
+# In[1095]:
+param =  30
+param =  31
+param =  32
+param =  33
+param =  34
+param =  35
+param =  36
+param =  37
+param =  38
+param =  39
+param =  40
+param =  41
+param =  42
+param =  43
+param =  44
+param =  45
+param =  46
+param =  47
+param =  48
+param =  49
+param =  50
+param =  51
+param =  52
+param =  53
+param =  54
+param =  55
+param =  56
+param =  57
+param =  58
+param =  59
+param =  60
+Minutes taken = 18.98
+# In[1096]:
+# In[1097]:
+min RMSE = 1.788
+optimum params = 
+n_estimators_opt:  31  max_depth_opt:  9
+min MAPE = 1.459%
+optimum params = 
+n_estimators_opt:  31  max_depth_opt:  9
+max ACCURACY = 0.558%
+optimum params = 
+n_estimators_opt:  32  max_depth_opt:  9
+# In[1099]:
+Minutes taken = 6.60
+# In[1100]:
+# In[1101]:
+min RMSE = 1.855
+optimum params = 
+learning_rate:  0.1  min_child_weight:  8
+# In[1102]:
+min MAPE = 1.524%
+optimum params = 
+learning_rate:  0.1  min_child_weight:  8
+max ACCURACY = 0.552%
+optimum params = 
+learning_rate:  0.1  min_child_weight:  8
+# In[1103]:
+Minutes taken = 0.53
+# In[1104]:
+# In[1105]:
+min RMSE = 1.920
+optimum params = 
+subsample:  0.5  gamma:  1.0
+min MAPE = 1.574%
+optimum params = 
+subsample:  0.5  gamma:  1.0
+max ACCURACY = 0.537%
+optimum params = 
+subsample:  0.1  gamma:  0.0
+# In[1107]:
+Minutes taken = 0.12
+# In[1108]:
+# In[1109]:
+min RMSE = 1.920
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+min MAPE = 1.574%
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+max ACCURACY = 0.533%
+optimum params = 
+colsample_bytree:  0.5  colsample_bylevel:  1
+# In[1111]:
+Get error metrics on validation set after hyperparameter tuning
+n_estimators_opt_param:  [32, 31]
+max_depth_opt_param:  [9]
+learning_rate_opt_param:  [0.1]
+min_child_weight_opt_param:  [8]
+subsample_opt_param:  [0.5, 0.1]
+colsample_bytree_opt_param:  [0.5, 1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0, 1.0]
+Force selection:
+n_estimators_opt_param:  [32, 31]
+max_depth_opt_param:  [9]
+learning_rate_opt_param:  [0.1]
+min_child_weight_opt_param:  [8]
+subsample_opt_param:  [0.5, 0.1]
+colsample_bytree_opt_param:  [0.5, 1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0, 1.0]
+tuning: RMSE on test set = 1.982
+tuning: MAPE on test set = 1.631%
+tuning: MAE on test set = 1.727%
+tuning: ACCURACY on test set = 0.500%
+tuning: RMSE on test set = 1.994
+tuning: MAPE on test set = 1.633%
+tuning: MAE on test set = 1.732%
+tuning: ACCURACY on test set = 0.527%
+tuning: RMSE on test set = 2.024
+tuning: MAPE on test set = 1.658%
+tuning: MAE on test set = 1.758%
+tuning: ACCURACY on test set = 0.533%
+RMSE = 2.024
+MAPE = 1.658%
+MAE = 1.758
+ACCURACY = 0.533
+n_estimators_opt:  31
+max_depth_opt:  9
+learning_rate_opt:  0.1
+min_child_weight_opt:  8
+subsample_opt:  0.5
+colsample_bytree_opt:  0.5
+colsample_bylevel_opt:  1
+gamma_opt:  1.0
+# In[1112]:
+# In[1113]:
+Set param:
+Do prediction on test set
+===> RMSE = 1.676
+===> MAPE = 1.286%
+===> MAE = 1.504
+===> ACCURACY = 0.650
+# In[1114]:
+# In[1115]:
+# In[1116]:
+# In[1117]:
+# In[1118]:
+# In[1119]:
+# In[1120]:
+Total minutes taken = 136.92
+# In[1121]:
+Predicting on day 1050, date 2017-03-06, with forecast horizon H = 21
+# In[1122]:
+# In[1123]:
+# In[1124]:
+############################################################################
+train.shape = (756, 14)
+val.shape = (252, 14)
+train_val.shape = (1008, 14)
+test.shape = (21, 14)
+# In[1089]:
+Get error metrics on validation set before hyperparameter tuning:
+RMSE = 1.859
+MAPE = 1.496%
+MAE = 1.625%
+ACCURACY = 0.475%
+# In[1090]:
+# In[1090]:
+# In[1091]:
+Do prediction on test set:
+RMSE = 1.010
+MAPE = 0.655%
+MAE = 0.783
+ACCURACY = 0.550
+# In[1092]:
+# In[1093]:
+# In[1094]:
+# In[1095]:
+param =  30
+param =  31
+param =  32
+param =  33
+param =  34
+param =  35
+param =  36
+param =  37
+param =  38
+param =  39
+param =  40
+param =  41
+param =  42
+param =  43
+param =  44
+param =  45
+param =  46
+param =  47
+param =  48
+param =  49
+param =  50
+param =  51
+param =  52
+param =  53
+param =  54
+param =  55
+param =  56
+param =  57
+param =  58
+param =  59
+param =  60
+Minutes taken = 19.81
+# In[1096]:
+# In[1097]:
+min RMSE = 1.716
+optimum params = 
+n_estimators_opt:  54  max_depth_opt:  4
+min MAPE = 1.370%
+optimum params = 
+n_estimators_opt:  54  max_depth_opt:  4
+max ACCURACY = 0.556%
+optimum params = 
+n_estimators_opt:  40  max_depth_opt:  6
+# In[1099]:
+Minutes taken = 5.90
+# In[1100]:
+# In[1101]:
+min RMSE = 1.718
+optimum params = 
+learning_rate:  0.1  min_child_weight:  17
+# In[1102]:
+min MAPE = 1.365%
+optimum params = 
+learning_rate:  0.1  min_child_weight:  17
+max ACCURACY = 0.562%
+optimum params = 
+learning_rate:  0.2  min_child_weight:  11
+# In[1103]:
+Minutes taken = 0.51
+# In[1104]:
+# In[1105]:
+min RMSE = 1.842
+optimum params = 
+subsample:  0.1  gamma:  0.5
+min MAPE = 1.466%
+optimum params = 
+subsample:  0.1  gamma:  0.5
+max ACCURACY = 0.446%
+optimum params = 
+subsample:  0.1  gamma:  0.0
+# In[1107]:
+Minutes taken = 0.10
+# In[1108]:
+# In[1109]:
+min RMSE = 1.835
+optimum params = 
+colsample_bytree:  0.5  colsample_bylevel:  1
+min MAPE = 1.466%
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+max ACCURACY = 0.500%
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+# In[1111]:
+Get error metrics on validation set after hyperparameter tuning
+n_estimators_opt_param:  [40, 54]
+max_depth_opt_param:  [4, 6]
+learning_rate_opt_param:  [0.1, 0.2]
+min_child_weight_opt_param:  [17, 11]
+subsample_opt_param:  [0.1]
+colsample_bytree_opt_param:  [0.5, 1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.5, 0.0]
+Force selection:
+n_estimators_opt_param:  [40, 54]
+max_depth_opt_param:  [4, 6]
+learning_rate_opt_param:  [0.1, 0.2]
+min_child_weight_opt_param:  [17, 11]
+subsample_opt_param:  [0.1]
+colsample_bytree_opt_param:  [0.5, 1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.5, 0.0]
+tuning: RMSE on test set = 1.846
+tuning: MAPE on test set = 1.492%
+tuning: MAE on test set = 1.619%
+tuning: ACCURACY on test set = 0.521%
+tuning: RMSE on test set = 1.968
+tuning: MAPE on test set = 1.580%
+tuning: MAE on test set = 1.715%
+tuning: ACCURACY on test set = 0.525%
+tuning: RMSE on test set = 1.927
+tuning: MAPE on test set = 1.540%
+tuning: MAE on test set = 1.662%
+tuning: ACCURACY on test set = 0.548%
+tuning: RMSE on test set = 1.843
+tuning: MAPE on test set = 1.488%
+tuning: MAE on test set = 1.613%
+tuning: ACCURACY on test set = 0.554%
+RMSE = 1.843
+MAPE = 1.488%
+MAE = 1.613
+ACCURACY = 0.554
+n_estimators_opt:  54
+max_depth_opt:  4
+learning_rate_opt:  0.1
+min_child_weight_opt:  11
+subsample_opt:  0.1
+colsample_bytree_opt:  0.5
+colsample_bylevel_opt:  1
+gamma_opt:  0.5
+# In[1112]:
+# In[1113]:
+Set param:
+Do prediction on test set
+===> RMSE = 1.127
+===> MAPE = 0.771%
+===> MAE = 0.923
+===> ACCURACY = 0.500
+# In[1114]:
+# In[1115]:
+# In[1116]:
+# In[1117]:
+# In[1118]:
+# In[1119]:
+# In[1120]:
+Total minutes taken = 166.35
+# In[1121]:
+Predicting on day 1092, date 2017-05-04, with forecast horizon H = 21
+# In[1122]:
+# In[1123]:
+# In[1124]:
+############################################################################
+train.shape = (756, 14)
+val.shape = (252, 14)
+train_val.shape = (1008, 14)
+test.shape = (21, 14)
+# In[1089]:
+Get error metrics on validation set before hyperparameter tuning:
+RMSE = 1.808
+MAPE = 1.425%
+MAE = 1.593%
+ACCURACY = 0.479%
+# In[1090]:
+# In[1090]:
+# In[1091]:
+Do prediction on test set:
+RMSE = 1.895
+MAPE = 1.358%
+MAE = 1.674
+ACCURACY = 0.350
+# In[1092]:
+# In[1093]:
+# In[1094]:
+# In[1095]:
+param =  30
+param =  31
+param =  32
+param =  33
+param =  34
+param =  35
+param =  36
+param =  37
+param =  38
+param =  39
+param =  40
+param =  41
+param =  42
+param =  43
+param =  44
+param =  45
+param =  46
+param =  47
+param =  48
+param =  49
+param =  50
+param =  51
+param =  52
+param =  53
+param =  54
+param =  55
+param =  56
+param =  57
+param =  58
+param =  59
+param =  60
+Minutes taken = 20.04
+# In[1096]:
+# In[1097]:
+min RMSE = 1.569
+optimum params = 
+n_estimators_opt:  32  max_depth_opt:  7
+min MAPE = 1.220%
+optimum params = 
+n_estimators_opt:  32  max_depth_opt:  7
+max ACCURACY = 0.544%
+optimum params = 
+n_estimators_opt:  60  max_depth_opt:  9
+# In[1099]:
+Minutes taken = 6.13
+# In[1100]:
+# In[1101]:
+min RMSE = 1.487
+optimum params = 
+learning_rate:  0.1  min_child_weight:  9
+# In[1102]:
+min MAPE = 1.142%
+optimum params = 
+learning_rate:  0.4  min_child_weight:  7
+max ACCURACY = 0.537%
+optimum params = 
+learning_rate:  0.5  min_child_weight:  9
+# In[1103]:
+Minutes taken = 0.51
+# In[1104]:
+# In[1105]:
+min RMSE = 1.517
+optimum params = 
+subsample:  0.1  gamma:  0.0
+min MAPE = 1.172%
+optimum params = 
+subsample:  0.1  gamma:  0.0
+max ACCURACY = 0.488%
+optimum params = 
+subsample:  0.1  gamma:  0.0
+# In[1107]:
+Minutes taken = 0.09
+# In[1108]:
+# In[1109]:
+min RMSE = 1.505
+optimum params = 
+colsample_bytree:  0.5  colsample_bylevel:  1
+min MAPE = 1.163%
+optimum params = 
+colsample_bytree:  0.5  colsample_bylevel:  1
+max ACCURACY = 0.519%
+optimum params = 
+colsample_bytree:  0.5  colsample_bylevel:  1
+# In[1111]:
+Get error metrics on validation set after hyperparameter tuning
+n_estimators_opt_param:  [32, 60]
+max_depth_opt_param:  [9, 7]
+learning_rate_opt_param:  [0.1, 0.4, 0.5]
+min_child_weight_opt_param:  [9, 7]
+subsample_opt_param:  [0.1]
+colsample_bytree_opt_param:  [0.5]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0]
+Force selection:
+n_estimators_opt_param:  [32, 60]
+max_depth_opt_param:  [9, 7]
+learning_rate_opt_param:  [0.1, 0.4, 0.5]
+min_child_weight_opt_param:  [9, 7]
+subsample_opt_param:  [0.1]
+colsample_bytree_opt_param:  [0.5]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0]
+tuning: RMSE on test set = 1.505
+tuning: MAPE on test set = 1.163%
+tuning: MAE on test set = 1.305%
+tuning: ACCURACY on test set = 0.519%
+tuning: RMSE on test set = 9.963
+tuning: MAPE on test set = 6.280%
+tuning: MAE on test set = 7.112%
+tuning: ACCURACY on test set = 0.556%
+tuning: RMSE on test set = 9.975
+tuning: MAPE on test set = 6.322%
+tuning: MAE on test set = 7.079%
+tuning: ACCURACY on test set = 0.567%
+RMSE = 9.975
+MAPE = 6.322%
+MAE = 7.079
+ACCURACY = 0.567
+n_estimators_opt:  32
+max_depth_opt:  7
+learning_rate_opt:  0.5
+min_child_weight_opt:  7
+subsample_opt:  0.1
+colsample_bytree_opt:  0.5
+colsample_bylevel_opt:  1
+gamma_opt:  0.0
+# In[1112]:
+# In[1113]:
+Set param:
+Do prediction on test set
+===> RMSE = 1.401
+===> MAPE = 0.885%
+===> MAE = 1.089
+===> ACCURACY = 0.400
+# In[1114]:
+# In[1115]:
+# In[1116]:
+# In[1117]:
+# In[1118]:
+# In[1119]:
+# In[1120]:
+Total minutes taken = 194.40
+# In[1121]:
+Predicting on day 1134, date 2017-07-05, with forecast horizon H = 21
+# In[1122]:
+# In[1123]:
+# In[1124]:
+############################################################################
+train.shape = (756, 14)
+val.shape = (252, 14)
+train_val.shape = (1008, 14)
+test.shape = (21, 14)
+# In[1089]:
+Get error metrics on validation set before hyperparameter tuning:
+RMSE = 1.519
+MAPE = 1.139%
+MAE = 1.307%
+ACCURACY = 0.487%
+# In[1090]:
+# In[1090]:
+# In[1091]:
+Do prediction on test set:
+RMSE = 1.763
+MAPE = 1.228%
+MAE = 1.541
+ACCURACY = 0.750
+# In[1092]:
+# In[1093]:
+# In[1094]:
+# In[1095]:
+param =  30
+param =  31
+param =  32
+param =  33
+param =  34
+param =  35
+param =  36
+param =  37
+param =  38
+param =  39
+param =  40
+param =  41
+param =  42
+param =  43
+param =  44
+param =  45
+param =  46
+param =  47
+param =  48
+param =  49
+param =  50
+param =  51
+param =  52
+param =  53
+param =  54
+param =  55
+param =  56
+param =  57
+param =  58
+param =  59
+param =  60
+Minutes taken = 19.96
+# In[1096]:
+C:\Users\despo\anaconda3\envs\STOCK_trading_test_2\lib\site-packages\pandas\plotting\_matplotlib\core.py:328: RuntimeWarning:
+
+More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`).
+
+# In[1097]:
+min RMSE = 1.367
+optimum params = 
+n_estimators_opt:  36  max_depth_opt:  7
+min MAPE = 1.025%
+optimum params = 
+n_estimators_opt:  36  max_depth_opt:  7
+max ACCURACY = 0.548%
+optimum params = 
+n_estimators_opt:  36  max_depth_opt:  6
+# In[1099]:
+Minutes taken = 6.37
+# In[1100]:
+# In[1101]:
+min RMSE = 1.390
+optimum params = 
+learning_rate:  0.1  min_child_weight:  11
+# In[1102]:
+min MAPE = 1.039%
+optimum params = 
+learning_rate:  0.1  min_child_weight:  11
+max ACCURACY = 0.533%
+optimum params = 
+learning_rate:  0.4  min_child_weight:  17
+# In[1103]:
+Minutes taken = 0.52
+# In[1104]:
+# In[1105]:
+min RMSE = 1.372
+optimum params = 
+subsample:  0.1  gamma:  1.5
+min MAPE = 1.033%
+optimum params = 
+subsample:  0.1  gamma:  1.5
+max ACCURACY = 0.477%
+optimum params = 
+subsample:  0.1  gamma:  0.0
+# In[1107]:
+Minutes taken = 0.10
+# In[1108]:
+# In[1109]:
+min RMSE = 1.372
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+min MAPE = 1.033%
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+max ACCURACY = 0.510%
+optimum params = 
+colsample_bytree:  0.5  colsample_bylevel:  1
+# In[1111]:
+Get error metrics on validation set after hyperparameter tuning
+n_estimators_opt_param:  [36]
+max_depth_opt_param:  [6, 7]
+learning_rate_opt_param:  [0.1, 0.4]
+min_child_weight_opt_param:  [17, 11]
+subsample_opt_param:  [0.1]
+colsample_bytree_opt_param:  [0.5, 1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0, 1.5]
+Force selection:
+n_estimators_opt_param:  [36]
+max_depth_opt_param:  [6, 7]
+learning_rate_opt_param:  [0.1, 0.4]
+min_child_weight_opt_param:  [17, 11]
+subsample_opt_param:  [0.1]
+colsample_bytree_opt_param:  [0.5, 1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0, 1.5]
+tuning: RMSE on test set = 1.516
+tuning: MAPE on test set = 1.149%
+tuning: MAE on test set = 1.319%
+tuning: ACCURACY on test set = 0.504%
+tuning: RMSE on test set = 1.485
+tuning: MAPE on test set = 1.124%
+tuning: MAE on test set = 1.290%
+tuning: ACCURACY on test set = 0.510%
+tuning: RMSE on test set = 2.554
+tuning: MAPE on test set = 1.904%
+tuning: MAE on test set = 2.175%
+tuning: ACCURACY on test set = 0.513%
+tuning: RMSE on test set = 2.322
+tuning: MAPE on test set = 1.759%
+tuning: MAE on test set = 2.008%
+tuning: ACCURACY on test set = 0.537%
+RMSE = 2.322
+MAPE = 1.759%
+MAE = 2.008
+ACCURACY = 0.537
+n_estimators_opt:  36
+max_depth_opt:  6
+learning_rate_opt:  0.4
+min_child_weight_opt:  11
+subsample_opt:  0.1
+colsample_bytree_opt:  0.5
+colsample_bylevel_opt:  1
+gamma_opt:  1.5
+# In[1112]:
+# In[1113]:
+Set param:
+Do prediction on test set
+===> RMSE = 1.500
+===> MAPE = 1.076%
+===> MAE = 1.347
+===> ACCURACY = 0.400
+# In[1114]:
+# In[1115]:
+# In[1116]:
+# In[1117]:
+# In[1118]:
+# In[1119]:
+# In[1120]:
+Total minutes taken = 222.90
+# In[1121]:
+Predicting on day 1176, date 2017-09-01, with forecast horizon H = 21
+# In[1122]:
+# In[1123]:
+# In[1124]:
+############################################################################
+train.shape = (756, 14)
+val.shape = (252, 14)
+train_val.shape = (1008, 14)
+test.shape = (21, 14)
+# In[1089]:
+Get error metrics on validation set before hyperparameter tuning:
+RMSE = 1.631
+MAPE = 1.193%
+MAE = 1.405%
+ACCURACY = 0.523%
+# In[1090]:
+# In[1090]:
+# In[1091]:
+Do prediction on test set:
+RMSE = 1.410
+MAPE = 0.755%
+MAE = 0.991
+ACCURACY = 0.700
+# In[1092]:
+# In[1093]:
+# In[1094]:
+# In[1095]:
+param =  30
+param =  31
+param =  32
+param =  33
+param =  34
+param =  35
+param =  36
+param =  37
+param =  38
+param =  39
+param =  40
+param =  41
+param =  42
+param =  43
+param =  44
+param =  45
+param =  46
+param =  47
+param =  48
+param =  49
+param =  50
+param =  51
+param =  52
+param =  53
+param =  54
+param =  55
+param =  56
+param =  57
+param =  58
+param =  59
+param =  60
+Minutes taken = 20.06
+# In[1096]:
+# In[1097]:
+min RMSE = 1.499
+optimum params = 
+n_estimators_opt:  30  max_depth_opt:  8
+min MAPE = 1.078%
+optimum params = 
+n_estimators_opt:  39  max_depth_opt:  7
+max ACCURACY = 0.550%
+optimum params = 
+n_estimators_opt:  43  max_depth_opt:  8
+# In[1099]:
+Minutes taken = 6.28
+# In[1100]:
+# In[1101]:
+min RMSE = 1.492
+optimum params = 
+learning_rate:  0.2  min_child_weight:  16
+# In[1102]:
+min MAPE = 1.084%
+optimum params = 
+learning_rate:  0.1  min_child_weight:  5
+max ACCURACY = 0.537%
+optimum params = 
+learning_rate:  0.5  min_child_weight:  9
+# In[1103]:
+Minutes taken = 0.48
+# In[1104]:
+# In[1105]:
+min RMSE = 1.671
+optimum params = 
+subsample:  0.5  gamma:  1.0
+min MAPE = 1.218%
+optimum params = 
+subsample:  0.5  gamma:  1.0
+max ACCURACY = 0.517%
+optimum params = 
+subsample:  0.1  gamma:  0.0
+# In[1107]:
+Minutes taken = 0.10
+# In[1108]:
+# In[1109]:
+min RMSE = 1.671
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+min MAPE = 1.218%
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+max ACCURACY = 0.535%
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+# In[1111]:
+Get error metrics on validation set after hyperparameter tuning
+n_estimators_opt_param:  [43, 30, 39]
+max_depth_opt_param:  [8, 7]
+learning_rate_opt_param:  [0.2, 0.5, 0.1]
+min_child_weight_opt_param:  [16, 9, 5]
+subsample_opt_param:  [0.5, 0.1]
+colsample_bytree_opt_param:  [1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0, 1.0]
+Force selection:
+n_estimators_opt_param:  [43, 30, 39]
+max_depth_opt_param:  [8, 7]
+learning_rate_opt_param:  [0.2, 0.5, 0.1]
+min_child_weight_opt_param:  [16, 9, 5]
+subsample_opt_param:  [0.5, 0.1]
+colsample_bytree_opt_param:  [1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0, 1.0]
+tuning: RMSE on test set = 1.674
+tuning: MAPE on test set = 1.233%
+tuning: MAE on test set = 1.457%
+tuning: ACCURACY on test set = 0.481%
+tuning: RMSE on test set = 1.592
+tuning: MAPE on test set = 1.171%
+tuning: MAE on test set = 1.382%
+tuning: ACCURACY on test set = 0.510%
+tuning: RMSE on test set = 1.922
+tuning: MAPE on test set = 1.415%
+tuning: MAE on test set = 1.669%
+tuning: ACCURACY on test set = 0.527%
+tuning: RMSE on test set = 2.821
+tuning: MAPE on test set = 1.985%
+tuning: MAE on test set = 2.332%
+tuning: ACCURACY on test set = 0.529%
+tuning: RMSE on test set = 3.229
+tuning: MAPE on test set = 2.271%
+tuning: MAE on test set = 2.657%
+tuning: ACCURACY on test set = 0.537%
+tuning: RMSE on test set = 2.187
+tuning: MAPE on test set = 1.584%
+tuning: MAE on test set = 1.852%
+tuning: ACCURACY on test set = 0.550%
+RMSE = 2.187
+MAPE = 1.584%
+MAE = 1.852
+ACCURACY = 0.550
+n_estimators_opt:  30
+max_depth_opt:  8
+learning_rate_opt:  0.5
+min_child_weight_opt:  5
+subsample_opt:  0.5
+colsample_bytree_opt:  1.0
+colsample_bylevel_opt:  1
+gamma_opt:  0.0
+# In[1112]:
+# In[1113]:
+Set param:
+Do prediction on test set
+===> RMSE = 1.137
+===> MAPE = 0.624%
+===> MAE = 0.817
+===> ACCURACY = 0.650
+# In[1114]:
+# In[1115]:
+# In[1116]:
+# In[1117]:
+# In[1118]:
+# In[1119]:
+# In[1120]:
+Total minutes taken = 261.73
+# In[1121]:
+Predicting on day 1218, date 2017-11-01, with forecast horizon H = 21
+# In[1122]:
+# In[1123]:
+# In[1124]:
+############################################################################
+train.shape = (756, 14)
+val.shape = (252, 14)
+train_val.shape = (1008, 14)
+test.shape = (21, 14)
+# In[1089]:
+Get error metrics on validation set before hyperparameter tuning:
+RMSE = 1.606
+MAPE = 1.140%
+MAE = 1.393%
+ACCURACY = 0.477%
+# In[1090]:
+# In[1090]:
+# In[1091]:
+Do prediction on test set:
+RMSE = 48.020
+MAPE = 19.638%
+MAE = 27.908
+ACCURACY = 0.650
+# In[1092]:
+# In[1093]:
+# In[1094]:
+# In[1095]:
+param =  30
+param =  31
+param =  32
+param =  33
+param =  34
+param =  35
+param =  36
+param =  37
+param =  38
+param =  39
+param =  40
+param =  41
+param =  42
+param =  43
+param =  44
+param =  45
+param =  46
+param =  47
+param =  48
+param =  49
+param =  50
+param =  51
+param =  52
+param =  53
+param =  54
+param =  55
+param =  56
+param =  57
+param =  58
+param =  59
+param =  60
+Minutes taken = 19.97
+# In[1096]:
+# In[1097]:
+min RMSE = 1.568
+optimum params = 
+n_estimators_opt:  54  max_depth_opt:  4
+min MAPE = 1.100%
+optimum params = 
+n_estimators_opt:  54  max_depth_opt:  4
+max ACCURACY = 0.581%
+optimum params = 
+n_estimators_opt:  50  max_depth_opt:  2
+# In[1099]:
+Minutes taken = 5.95
+# In[1100]:
+# In[1101]:
+min RMSE = 1.450
+optimum params = 
+learning_rate:  0.3  min_child_weight:  6
+# In[1102]:
+min MAPE = 1.019%
+optimum params = 
+learning_rate:  0.3  min_child_weight:  6
+max ACCURACY = 0.554%
+optimum params = 
+learning_rate:  0.5  min_child_weight:  16
+# In[1103]:
+Minutes taken = 0.57
+# In[1104]:
+# In[1105]:
+min RMSE = 1.612
+optimum params = 
+subsample:  0.5  gamma:  0.0
+min MAPE = 1.142%
+optimum params = 
+subsample:  0.5  gamma:  0.5
+max ACCURACY = 0.515%
+optimum params = 
+subsample:  0.1  gamma:  0.0
+# In[1107]:
+Minutes taken = 0.12
+# In[1108]:
+# In[1109]:
+min RMSE = 1.529
+optimum params = 
+colsample_bytree:  0.5  colsample_bylevel:  1
+min MAPE = 1.105%
+optimum params = 
+colsample_bytree:  0.5  colsample_bylevel:  1
+max ACCURACY = 0.562%
+optimum params = 
+colsample_bytree:  0.5  colsample_bylevel:  1
+# In[1111]:
+Get error metrics on validation set after hyperparameter tuning
+n_estimators_opt_param:  [50, 54]
+max_depth_opt_param:  [2, 4]
+learning_rate_opt_param:  [0.3, 0.5]
+min_child_weight_opt_param:  [16, 6]
+subsample_opt_param:  [0.5, 0.1]
+colsample_bytree_opt_param:  [0.5]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0, 0.5]
+Force selection:
+n_estimators_opt_param:  [50, 54]
+max_depth_opt_param:  [2, 4]
+learning_rate_opt_param:  [0.3, 0.5]
+min_child_weight_opt_param:  [16, 6]
+subsample_opt_param:  [0.5, 0.1]
+colsample_bytree_opt_param:  [0.5]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0, 0.5]
+tuning: RMSE on test set = 1.631
+tuning: MAPE on test set = 1.181%
+tuning: MAE on test set = 1.439%
+tuning: ACCURACY on test set = 0.462%
+tuning: RMSE on test set = 1.650
+tuning: MAPE on test set = 1.198%
+tuning: MAE on test set = 1.458%
+tuning: ACCURACY on test set = 0.465%
+tuning: RMSE on test set = 1.730
+tuning: MAPE on test set = 1.244%
+tuning: MAE on test set = 1.518%
+tuning: ACCURACY on test set = 0.485%
+tuning: RMSE on test set = 1.654
+tuning: MAPE on test set = 1.164%
+tuning: MAE on test set = 1.424%
+tuning: ACCURACY on test set = 0.494%
+tuning: RMSE on test set = 1.653
+tuning: MAPE on test set = 1.153%
+tuning: MAE on test set = 1.412%
+tuning: ACCURACY on test set = 0.502%
+tuning: RMSE on test set = 7.670
+tuning: MAPE on test set = 4.350%
+tuning: MAE on test set = 5.300%
+tuning: ACCURACY on test set = 0.513%
+tuning: RMSE on test set = 5.362
+tuning: MAPE on test set = 3.337%
+tuning: MAE on test set = 4.066%
+tuning: ACCURACY on test set = 0.531%
+tuning: RMSE on test set = 1.694
+tuning: MAPE on test set = 1.218%
+tuning: MAE on test set = 1.481%
+tuning: ACCURACY on test set = 0.540%
+tuning: RMSE on test set = 1.529
+tuning: MAPE on test set = 1.105%
+tuning: MAE on test set = 1.341%
+tuning: ACCURACY on test set = 0.562%
+RMSE = 1.529
+MAPE = 1.105%
+MAE = 1.341
+ACCURACY = 0.562
+n_estimators_opt:  54
+max_depth_opt:  4
+learning_rate_opt:  0.3
+min_child_weight_opt:  6
+subsample_opt:  0.5
+colsample_bytree_opt:  0.5
+colsample_bylevel_opt:  1
+gamma_opt:  0.5
+# In[1112]:
+# In[1113]:
+Set param:
+Do prediction on test set
+===> RMSE = 5.733
+===> MAPE = 3.791%
+===> MAE = 5.354
+===> ACCURACY = 0.400
+# In[1114]:
+# In[1115]:
+# In[1116]:
+# In[1117]:
+# In[1118]:
+# In[1119]:
+# In[1120]:
+Total minutes taken = 291.69
+# In[1121]:
+Predicting on day 1260, date 2018-01-03, with forecast horizon H = 21
+# In[1122]:
+# In[1123]:
+# In[1124]:
+############################################################################
+train.shape = (756, 14)
+val.shape = (252, 14)
+train_val.shape = (1008, 14)
+test.shape = (21, 14)
+# In[1089]:
+Get error metrics on validation set before hyperparameter tuning:
+RMSE = 2.272
+MAPE = 1.480%
+MAE = 1.905%
+ACCURACY = 0.533%
+# In[1090]:
+# In[1090]:
+# In[1091]:
+Do prediction on test set:
+RMSE = 4.884
+MAPE = 2.896%
+MAE = 3.876
+ACCURACY = 0.200
+# In[1092]:
+# In[1093]:
+# In[1094]:
+# In[1095]:
+param =  30
+param =  31
+param =  32
+param =  33
+param =  34
+param =  35
+param =  36
+param =  37
+param =  38
+param =  39
+param =  40
+param =  41
+param =  42
+param =  43
+param =  44
+param =  45
+param =  46
+param =  47
+param =  48
+param =  49
+param =  50
+param =  51
+param =  52
+param =  53
+param =  54
+param =  55
+param =  56
+param =  57
+param =  58
+param =  59
+param =  60
+Minutes taken = 19.85
+# In[1096]:
+# In[1097]:
+min RMSE = 2.144
+optimum params = 
+n_estimators_opt:  51  max_depth_opt:  3
+min MAPE = 1.422%
+optimum params = 
+n_estimators_opt:  51  max_depth_opt:  3
+max ACCURACY = 0.565%
+optimum params = 
+n_estimators_opt:  40  max_depth_opt:  4
+# In[1099]:
+Minutes taken = 5.28
+# In[1100]:
+# In[1101]:
+min RMSE = 2.248
+optimum params = 
+learning_rate:  0.1  min_child_weight:  17
+# In[1102]:
+min MAPE = 1.493%
+optimum params = 
+learning_rate:  0.1  min_child_weight:  17
+max ACCURACY = 0.571%
+optimum params = 
+learning_rate:  0.5  min_child_weight:  10
+# In[1103]:
+Minutes taken = 0.50
+# In[1104]:
+# In[1105]:
+min RMSE = 2.063
+optimum params = 
+subsample:  0.1  gamma:  1.5
+min MAPE = 1.374%
+optimum params = 
+subsample:  0.1  gamma:  1.5
+max ACCURACY = 0.502%
+optimum params = 
+subsample:  0.1  gamma:  0.0
+# In[1107]:
+Minutes taken = 0.09
+# In[1108]:
+# In[1109]:
+min RMSE = 2.063
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+min MAPE = 1.374%
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+max ACCURACY = 0.506%
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+# In[1111]:
+Get error metrics on validation set after hyperparameter tuning
+n_estimators_opt_param:  [40, 51]
+max_depth_opt_param:  [3, 4]
+learning_rate_opt_param:  [0.1, 0.5]
+min_child_weight_opt_param:  [17, 10]
+subsample_opt_param:  [0.1]
+colsample_bytree_opt_param:  [1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0, 1.5]
+Force selection:
+n_estimators_opt_param:  [40, 51]
+max_depth_opt_param:  [3, 4]
+learning_rate_opt_param:  [0.1, 0.5]
+min_child_weight_opt_param:  [17, 10]
+subsample_opt_param:  [0.1]
+colsample_bytree_opt_param:  [1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0, 1.5]
+tuning: RMSE on test set = 2.156
+tuning: MAPE on test set = 1.443%
+tuning: MAE on test set = 1.856%
+tuning: ACCURACY on test set = 0.471%
+tuning: RMSE on test set = 2.166
+tuning: MAPE on test set = 1.453%
+tuning: MAE on test set = 1.867%
+tuning: ACCURACY on test set = 0.477%
+tuning: RMSE on test set = 2.167
+tuning: MAPE on test set = 1.442%
+tuning: MAE on test set = 1.861%
+tuning: ACCURACY on test set = 0.488%
+tuning: RMSE on test set = 2.100
+tuning: MAPE on test set = 1.403%
+tuning: MAE on test set = 1.811%
+tuning: ACCURACY on test set = 0.521%
+tuning: RMSE on test set = 2.961
+tuning: MAPE on test set = 2.019%
+tuning: MAE on test set = 2.579%
+tuning: ACCURACY on test set = 0.535%
+tuning: RMSE on test set = 50.139
+tuning: MAPE on test set = 22.928%
+tuning: MAE on test set = 29.425%
+tuning: ACCURACY on test set = 0.546%
+RMSE = 50.139
+MAPE = 22.928%
+MAE = 29.425
+ACCURACY = 0.546
+n_estimators_opt:  51
+max_depth_opt:  4
+learning_rate_opt:  0.5
+min_child_weight_opt:  10
+subsample_opt:  0.1
+colsample_bytree_opt:  1.0
+colsample_bylevel_opt:  1
+gamma_opt:  0.0
+# In[1112]:
+# In[1113]:
+Set param:
+Do prediction on test set
+===> RMSE = 145.781
+===> MAPE = 69.555%
+===> MAE = 92.940
+===> ACCURACY = 0.450
+# In[1114]:
+# In[1115]:
+# In[1116]:
+# In[1117]:
+# In[1118]:
+# In[1119]:
+# In[1120]:
+Total minutes taken = 319.05
+# In[1121]:
+Predicting on day 1302, date 2018-03-06, with forecast horizon H = 21
+# In[1122]:
+# In[1123]:
+# In[1124]:
+############################################################################
+train.shape = (756, 14)
+val.shape = (252, 14)
+train_val.shape = (1008, 14)
+test.shape = (21, 14)
+# In[1089]:
+Get error metrics on validation set before hyperparameter tuning:
+RMSE = 9.060
+MAPE = 4.404%
+MAE = 6.009%
+ACCURACY = 0.510%
+# In[1090]:
+# In[1090]:
+# In[1091]:
+Do prediction on test set:
+RMSE = 3.443
+MAPE = 2.402%
+MAE = 3.324
+ACCURACY = 0.750
+# In[1092]:
+# In[1093]:
+# In[1094]:
+# In[1095]:
+param =  30
+param =  31
+param =  32
+param =  33
+param =  34
+param =  35
+param =  36
+param =  37
+param =  38
+param =  39
+param =  40
+param =  41
+param =  42
+param =  43
+param =  44
+param =  45
+param =  46
+param =  47
+param =  48
+param =  49
+param =  50
+param =  51
+param =  52
+param =  53
+param =  54
+param =  55
+param =  56
+param =  57
+param =  58
+param =  59
+param =  60
+Minutes taken = 19.61
+# In[1096]:
+# In[1097]:
+min RMSE = 2.562
+optimum params = 
+n_estimators_opt:  33  max_depth_opt:  9
+min MAPE = 1.643%
+optimum params = 
+n_estimators_opt:  33  max_depth_opt:  9
+max ACCURACY = 0.577%
+optimum params = 
+n_estimators_opt:  57  max_depth_opt:  8
+# In[1099]:
+Minutes taken = 6.77
+# In[1100]:
+# In[1101]:
+min RMSE = 2.265
+optimum params = 
+learning_rate:  0.4  min_child_weight:  15
+# In[1102]:
+min MAPE = 1.450%
+optimum params = 
+learning_rate:  0.4  min_child_weight:  15
+max ACCURACY = 0.554%
+optimum params = 
+learning_rate:  0.2  min_child_weight:  6
+# In[1103]:
+Minutes taken = 0.50
+# In[1104]:
+# In[1105]:
+min RMSE = 2.516
+optimum params = 
+subsample:  0.5  gamma:  0.5
+min MAPE = 1.633%
+optimum params = 
+subsample:  0.5  gamma:  0.5
+max ACCURACY = 0.515%
+optimum params = 
+subsample:  0.1  gamma:  0.0
+# In[1107]:
+Minutes taken = 0.11
+# In[1108]:
+# In[1109]:
+min RMSE = 2.516
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+min MAPE = 1.633%
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+max ACCURACY = 0.527%
+optimum params = 
+colsample_bytree:  0.5  colsample_bylevel:  1
+# In[1111]:
+Get error metrics on validation set after hyperparameter tuning
+n_estimators_opt_param:  [33, 57]
+max_depth_opt_param:  [8, 9]
+learning_rate_opt_param:  [0.4, 0.2]
+min_child_weight_opt_param:  [6, 15]
+subsample_opt_param:  [0.5, 0.1]
+colsample_bytree_opt_param:  [0.5, 1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.5, 0.0]
+Force selection:
+n_estimators_opt_param:  [33, 57]
+max_depth_opt_param:  [8, 9]
+learning_rate_opt_param:  [0.4, 0.2]
+min_child_weight_opt_param:  [6, 15]
+subsample_opt_param:  [0.5, 0.1]
+colsample_bytree_opt_param:  [0.5, 1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.5, 0.0]
+tuning: RMSE on test set = 4.272
+tuning: MAPE on test set = 2.668%
+tuning: MAE on test set = 3.488%
+tuning: ACCURACY on test set = 0.483%
+tuning: RMSE on test set = 3.302
+tuning: MAPE on test set = 2.122%
+tuning: MAE on test set = 2.808%
+tuning: ACCURACY on test set = 0.525%
+tuning: RMSE on test set = 2.976
+tuning: MAPE on test set = 1.980%
+tuning: MAE on test set = 2.596%
+tuning: ACCURACY on test set = 0.527%
+tuning: RMSE on test set = 3.046
+tuning: MAPE on test set = 2.021%
+tuning: MAE on test set = 2.656%
+tuning: ACCURACY on test set = 0.531%
+tuning: RMSE on test set = 3.431
+tuning: MAPE on test set = 2.291%
+tuning: MAE on test set = 3.023%
+tuning: ACCURACY on test set = 0.533%
+tuning: RMSE on test set = 2.515
+tuning: MAPE on test set = 1.637%
+tuning: MAE on test set = 2.158%
+tuning: ACCURACY on test set = 0.540%
+tuning: RMSE on test set = 2.358
+tuning: MAPE on test set = 1.522%
+tuning: MAE on test set = 1.988%
+tuning: ACCURACY on test set = 0.548%
+tuning: RMSE on test set = 3.772
+tuning: MAPE on test set = 2.438%
+tuning: MAE on test set = 3.233%
+tuning: ACCURACY on test set = 0.548%
+RMSE = 3.772
+MAPE = 2.438%
+MAE = 3.233
+ACCURACY = 0.548
+n_estimators_opt:  57
+max_depth_opt:  9
+learning_rate_opt:  0.4
+min_child_weight_opt:  6
+subsample_opt:  0.5
+colsample_bytree_opt:  0.5
+colsample_bylevel_opt:  1
+gamma_opt:  0.0
+# In[1112]:
+# In[1113]:
+Set param:
+Do prediction on test set
+===> RMSE = 3.819
+===> MAPE = 2.703%
+===> MAE = 3.738
+===> ACCURACY = 0.550
+# In[1114]:
+# In[1115]:
+# In[1116]:
+# In[1117]:
+# In[1118]:
+# In[1119]:
+# In[1120]:
+Total minutes taken = 353.64
+# In[1121]:
+Predicting on day 1344, date 2018-05-04, with forecast horizon H = 21
+# In[1122]:
+# In[1123]:
+# In[1124]:
+############################################################################
+train.shape = (756, 14)
+val.shape = (252, 14)
+train_val.shape = (1008, 14)
+test.shape = (21, 14)
+# In[1089]:
+Get error metrics on validation set before hyperparameter tuning:
+RMSE = 2.821
+MAPE = 1.814%
+MAE = 2.424%
+ACCURACY = 0.496%
+# In[1090]:
+# In[1090]:
+# In[1091]:
+Do prediction on test set:
+RMSE = 3.470
+MAPE = 2.329%
+MAE = 3.342
+ACCURACY = 0.650
+# In[1092]:
+# In[1093]:
+# In[1094]:
+# In[1095]:
+param =  30
+param =  31
+param =  32
+param =  33
+param =  34
+param =  35
+param =  36
+param =  37
+param =  38
+param =  39
+param =  40
+param =  41
+param =  42
+param =  43
+param =  44
+param =  45
+param =  46
+param =  47
+param =  48
+param =  49
+param =  50
+param =  51
+param =  52
+param =  53
+param =  54
+param =  55
+param =  56
+param =  57
+param =  58
+param =  59
+param =  60
+Minutes taken = 19.46
+# In[1096]:
+# In[1097]:
+min RMSE = 2.496
+optimum params = 
+n_estimators_opt:  33  max_depth_opt:  4
+min MAPE = 1.600%
+optimum params = 
+n_estimators_opt:  33  max_depth_opt:  4
+max ACCURACY = 0.567%
+optimum params = 
+n_estimators_opt:  39  max_depth_opt:  5
+# In[1099]:
+Minutes taken = 5.07
+# In[1100]:
+# In[1101]:
+min RMSE = 2.553
+optimum params = 
+learning_rate:  0.3  min_child_weight:  16
+# In[1102]:
+min MAPE = 1.637%
+optimum params = 
+learning_rate:  0.3  min_child_weight:  16
+max ACCURACY = 0.585%
+optimum params = 
+learning_rate:  0.1  min_child_weight:  17
+# In[1103]:
+Minutes taken = 0.47
+# In[1104]:
+# In[1105]:
+min RMSE = 2.771
+optimum params = 
+subsample:  0.5  gamma:  1.0
+min MAPE = 1.818%
+optimum params = 
+subsample:  0.5  gamma:  1.0
+max ACCURACY = 0.483%
+optimum params = 
+subsample:  0.1  gamma:  0.0
+# In[1107]:
+Minutes taken = 0.10
+# In[1108]:
+# In[1109]:
+min RMSE = 2.771
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+min MAPE = 1.818%
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+max ACCURACY = 0.525%
+optimum params = 
+colsample_bytree:  0.5  colsample_bylevel:  1
+# In[1111]:
+Get error metrics on validation set after hyperparameter tuning
+n_estimators_opt_param:  [33, 39]
+max_depth_opt_param:  [4, 5]
+learning_rate_opt_param:  [0.3, 0.1]
+min_child_weight_opt_param:  [16, 17]
+subsample_opt_param:  [0.5, 0.1]
+colsample_bytree_opt_param:  [0.5, 1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0, 1.0]
+Force selection:
+n_estimators_opt_param:  [33, 39]
+max_depth_opt_param:  [4, 5]
+learning_rate_opt_param:  [0.3, 0.1]
+min_child_weight_opt_param:  [16, 17]
+subsample_opt_param:  [0.5, 0.1]
+colsample_bytree_opt_param:  [0.5, 1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0, 1.0]
+tuning: RMSE on test set = 3.223
+tuning: MAPE on test set = 2.083%
+tuning: MAE on test set = 2.786%
+tuning: ACCURACY on test set = 0.471%
+tuning: RMSE on test set = 2.974
+tuning: MAPE on test set = 1.948%
+tuning: MAE on test set = 2.609%
+tuning: ACCURACY on test set = 0.525%
+tuning: RMSE on test set = 2.784
+tuning: MAPE on test set = 1.817%
+tuning: MAE on test set = 2.415%
+tuning: ACCURACY on test set = 0.550%
+tuning: RMSE on test set = 2.635
+tuning: MAPE on test set = 1.709%
+tuning: MAE on test set = 2.282%
+tuning: ACCURACY on test set = 0.562%
+tuning: RMSE on test set = 2.763
+tuning: MAPE on test set = 1.763%
+tuning: MAE on test set = 2.355%
+tuning: ACCURACY on test set = 0.567%
+RMSE = 2.763
+MAPE = 1.763%
+MAE = 2.355
+ACCURACY = 0.567
+n_estimators_opt:  39
+max_depth_opt:  5
+learning_rate_opt:  0.1
+min_child_weight_opt:  17
+subsample_opt:  0.5
+colsample_bytree_opt:  0.5
+colsample_bylevel_opt:  1
+gamma_opt:  1.0
+# In[1112]:
+# In[1113]:
+Set param:
+Do prediction on test set
+===> RMSE = 4.429
+===> MAPE = 2.995%
+===> MAE = 4.296
+===> ACCURACY = 0.450
+# In[1114]:
+# In[1115]:
+# In[1116]:
+# In[1117]:
+# In[1118]:
+# In[1119]:
+# In[1120]:
+Total minutes taken = 384.97
+# In[1121]:
+Predicting on day 1386, date 2018-07-05, with forecast horizon H = 21
+# In[1122]:
+# In[1123]:
+# In[1124]:
+############################################################################
+train.shape = (756, 14)
+val.shape = (252, 14)
+train_val.shape = (1008, 14)
+test.shape = (21, 14)
+# In[1089]:
+Get error metrics on validation set before hyperparameter tuning:
+RMSE = 2.754
+MAPE = 1.744%
+MAE = 2.379%
+ACCURACY = 0.542%
+# In[1090]:
+# In[1090]:
+# In[1091]:
+Do prediction on test set:
+RMSE = 0.911
+MAPE = 0.492%
+MAE = 0.728
+ACCURACY = 0.300
+# In[1092]:
+# In[1093]:
+# In[1094]:
+# In[1095]:
+param =  30
+param =  31
+param =  32
+param =  33
+param =  34
+param =  35
+param =  36
+param =  37
+param =  38
+param =  39
+param =  40
+param =  41
+param =  42
+param =  43
+param =  44
+param =  45
+param =  46
+param =  47
+param =  48
+param =  49
+param =  50
+param =  51
+param =  52
+param =  53
+param =  54
+param =  55
+param =  56
+param =  57
+param =  58
+param =  59
+param =  60
+Minutes taken = 19.51
+# In[1096]:
+# In[1097]:
+min RMSE = 2.522
+optimum params = 
+n_estimators_opt:  41  max_depth_opt:  6
+min MAPE = 1.578%
+optimum params = 
+n_estimators_opt:  35  max_depth_opt:  6
+max ACCURACY = 0.565%
+optimum params = 
+n_estimators_opt:  37  max_depth_opt:  5
+# In[1099]:
+Minutes taken = 8.66
+# In[1100]:
+# In[1101]:
+min RMSE = 2.596
+optimum params = 
+learning_rate:  0.1  min_child_weight:  5
+# In[1102]:
+min MAPE = 1.648%
+optimum params = 
+learning_rate:  0.1  min_child_weight:  5
+max ACCURACY = 0.562%
+optimum params = 
+learning_rate:  0.2  min_child_weight:  19
+# In[1103]:
+Minutes taken = 1.05
+# In[1104]:
+# In[1105]:
+min RMSE = 2.672
+optimum params = 
+subsample:  0.1  gamma:  0.0
+min MAPE = 1.700%
+optimum params = 
+subsample:  0.1  gamma:  0.0
+max ACCURACY = 0.554%
+optimum params = 
+subsample:  0.1  gamma:  0.0
+# In[1107]:
+Minutes taken = 0.19
+# In[1108]:
+# In[1109]:
+min RMSE = 2.672
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+min MAPE = 1.700%
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+max ACCURACY = 0.519%
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+# In[1111]:
+Get error metrics on validation set after hyperparameter tuning
+n_estimators_opt_param:  [41, 35, 37]
+max_depth_opt_param:  [5, 6]
+learning_rate_opt_param:  [0.1, 0.2]
+min_child_weight_opt_param:  [19, 5]
+subsample_opt_param:  [0.1]
+colsample_bytree_opt_param:  [1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0]
+Force selection:
+n_estimators_opt_param:  [41, 35, 37]
+max_depth_opt_param:  [5, 6]
+learning_rate_opt_param:  [0.1, 0.2]
+min_child_weight_opt_param:  [19, 5]
+subsample_opt_param:  [0.1]
+colsample_bytree_opt_param:  [1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0]
+tuning: RMSE on test set = 3.212
+tuning: MAPE on test set = 2.085%
+tuning: MAE on test set = 2.846%
+tuning: ACCURACY on test set = 0.477%
+tuning: RMSE on test set = 4.041
+tuning: MAPE on test set = 2.585%
+tuning: MAE on test set = 3.523%
+tuning: ACCURACY on test set = 0.496%
+tuning: RMSE on test set = 6.678
+tuning: MAPE on test set = 4.113%
+tuning: MAE on test set = 5.628%
+tuning: ACCURACY on test set = 0.521%
+tuning: RMSE on test set = 3.277
+tuning: MAPE on test set = 2.049%
+tuning: MAE on test set = 2.788%
+tuning: ACCURACY on test set = 0.525%
+tuning: RMSE on test set = 2.609
+tuning: MAPE on test set = 1.647%
+tuning: MAE on test set = 2.245%
+tuning: ACCURACY on test set = 0.535%
+RMSE = 2.609
+MAPE = 1.647%
+MAE = 2.245
+ACCURACY = 0.535
+n_estimators_opt:  37
+max_depth_opt:  6
+learning_rate_opt:  0.1
+min_child_weight_opt:  5
+subsample_opt:  0.1
+colsample_bytree_opt:  1.0
+colsample_bylevel_opt:  1
+gamma_opt:  0.0
+# In[1112]:
+# In[1113]:
+Set param:
+Do prediction on test set
+===> RMSE = 0.824
+===> MAPE = 0.449%
+===> MAE = 0.666
+===> ACCURACY = 0.350
+# In[1114]:
+# In[1115]:
+# In[1116]:
+# In[1117]:
+# In[1118]:
+# In[1119]:
+# In[1120]:
+Total minutes taken = 416.63
+# In[1121]:
+Predicting on day 1428, date 2018-09-04, with forecast horizon H = 21
+# In[1122]:
+# In[1123]:
+# In[1124]:
+############################################################################
+train.shape = (756, 14)
+val.shape = (252, 14)
+train_val.shape = (1008, 14)
+test.shape = (21, 14)
+# In[1089]:
+Get error metrics on validation set before hyperparameter tuning:
+RMSE = 3.395
+MAPE = 2.053%
+MAE = 2.831%
+ACCURACY = 0.544%
+# In[1090]:
+# In[1090]:
+# In[1091]:
+Do prediction on test set:
+RMSE = 2.407
+MAPE = 1.429%
+MAE = 1.984
+ACCURACY = 0.600
+# In[1092]:
+# In[1093]:
+# In[1094]:
+# In[1095]:
+param =  30
+param =  31
+param =  32
+param =  33
+param =  34
+param =  35
+param =  36
+param =  37
+param =  38
+param =  39
+param =  40
+param =  41
+param =  42
+param =  43
+param =  44
+param =  45
+param =  46
+param =  47
+param =  48
+param =  49
+param =  50
+param =  51
+param =  52
+param =  53
+param =  54
+param =  55
+param =  56
+param =  57
+param =  58
+param =  59
+param =  60
+Minutes taken = 47.86
+# In[1096]:
+# In[1097]:
+min RMSE = 3.090
+optimum params = 
+n_estimators_opt:  31  max_depth_opt:  3
+min MAPE = 1.885%
+optimum params = 
+n_estimators_opt:  31  max_depth_opt:  3
+max ACCURACY = 0.579%
+optimum params = 
+n_estimators_opt:  33  max_depth_opt:  3
+# In[1099]:
+Minutes taken = 3.95
+# In[1100]:
+# In[1101]:
+min RMSE = 3.078
+optimum params = 
+learning_rate:  0.1  min_child_weight:  22
+# In[1102]:
+min MAPE = 1.873%
+optimum params = 
+learning_rate:  0.1  min_child_weight:  22
+max ACCURACY = 0.556%
+optimum params = 
+learning_rate:  0.1  min_child_weight:  12
+# In[1103]:
+Minutes taken = 0.37
+# In[1104]:
+# In[1105]:
+min RMSE = 3.019
+optimum params = 
+subsample:  0.5  gamma:  1.3
+min MAPE = 1.837%
+optimum params = 
+subsample:  0.5  gamma:  1.5
+max ACCURACY = 0.454%
+optimum params = 
+subsample:  0.1  gamma:  0.0
+# In[1107]:
+Minutes taken = 0.08
+# In[1108]:
+# In[1109]:
+min RMSE = 3.030
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+min MAPE = 1.837%
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+max ACCURACY = 0.542%
+optimum params = 
+colsample_bytree:  1.0  colsample_bylevel:  1
+# In[1111]:
+Get error metrics on validation set after hyperparameter tuning
+n_estimators_opt_param:  [33, 31]
+max_depth_opt_param:  [3]
+learning_rate_opt_param:  [0.1]
+min_child_weight_opt_param:  [12, 22]
+subsample_opt_param:  [0.5, 0.1]
+colsample_bytree_opt_param:  [1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0, 1.3, 1.5]
+Force selection:
+n_estimators_opt_param:  [33, 31]
+max_depth_opt_param:  [3]
+learning_rate_opt_param:  [0.1]
+min_child_weight_opt_param:  [12, 22]
+subsample_opt_param:  [0.5, 0.1]
+colsample_bytree_opt_param:  [1.0]
+colsample_bylevel_opt_param:  [1]
+gamma_opt_param:  [0.0, 1.3, 1.5]
+tuning: RMSE on test set = 3.105
+tuning: MAPE on test set = 1.905%
+tuning: MAE on test set = 2.634%
+tuning: ACCURACY on test set = 0.556%
+tuning: RMSE on test set = 3.020
+tuning: MAPE on test set = 1.839%
+tuning: MAE on test set = 2.542%
+tuning: ACCURACY on test set = 0.558%
+RMSE = 3.020
+MAPE = 1.839%
+MAE = 2.542
+ACCURACY = 0.558
+n_estimators_opt:  31
+max_depth_opt:  3
+learning_rate_opt:  0.1
+min_child_weight_opt:  22
+subsample_opt:  0.5
+colsample_bytree_opt:  1.0
+colsample_bylevel_opt:  1
+gamma_opt:  0.0
+# In[1112]:
+# In[1113]:
+Set param:
+Do prediction on test set
+===> RMSE = 2.579
+===> MAPE = 1.457%
+===> MAE = 2.013
+===> ACCURACY = 0.500
+# In[1114]:
+# In[1115]:
+# In[1116]:
+# In[1117]:
+# In[1118]:
+# In[1119]:
+# In[1120]:
+Total minutes taken = 470.00
+# In[1121]:
+Predicting on day 1470, date 2018-11-01, with forecast horizon H = 21
+# In[1122]:
+# In[1123]:
+# In[1124]:
+# In[1125]:
+# In[1126]:
+Traceback (most recent call last):
+  File "C:/Users/despo/PycharmProjects/pythonProjectStocks/main.py", line 2011, in <module>
+    tuned_params = pickle.load(open("./out/v6d_tuned_params_" + date + ".pickle", "rb"))
+_pickle.UnpicklingError: invalid load key, ','.

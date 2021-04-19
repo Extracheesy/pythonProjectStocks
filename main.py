@@ -839,7 +839,7 @@ layout = dict(xaxis = dict(title = 'date'),
 
 fig = dict(data=data, layout=layout)
 #py.iplot(fig, filename=filename)
-fig.write_image("./figure/test_v6_1.pdf")
+#fig.write_image("./figure/test_v6_1.pdf")
 """
 # # Feature Engineering
 
@@ -897,7 +897,7 @@ layout = dict(xaxis = dict(title = 'month'),
 
 fig = dict(data=data, layout=layout)
 #py.iplot(fig, filename='StockPricePrediction_v6d_avg_price_mth')
-fig.write_image("./figure/test_v6_month.pdf")
+#fig.write_image("./figure/test_v6_month.pdf")
 """
 print("# In[1081]:")
 
@@ -926,7 +926,7 @@ layout = dict(xaxis = dict(title = 'day of month'),
 
 fig = dict(data=data, layout=layout)
 #py.iplot(fig, filename='StockPricePrediction_v6d_avg_price_dayofmonth')
-fig.write_image("./figure/test_v6_day.pdf")
+#fig.write_image("./figure/test_v6_day.pdf")
 """
 
 print("# In[1082]:")
@@ -957,7 +957,7 @@ layout = dict(xaxis = dict(title = 'day of week'),
 
 fig = dict(data=data, layout=layout)
 #py.iplot(fig, filename='StockPricePrediction_v6d_avg_price_dayofweek')
-#fig.write_image("./figure/test_v6_day.pdf")
+##fig.write_image("./figure/test_v6_day.pdf")
 """
 
 print("# In[1083]:")
@@ -990,26 +990,23 @@ for n in range(N, 0, -1):
 corr_matrix = df_lags[features].corr()
 corr_matrix["adj_close"].sort_values(ascending=False)
 
-print("# In[1085]:")
-
 # Plot correlation for lag features only
 features = ['adj_close']
 for n in range(1, N + 1, 1):
     features.append("adj_close_lag_" + str(n))
-
 corr_matrix = df_lags[features].corr()
-
 z_list = []
 for feat in features:
     z_list.append(corr_matrix.loc[:, feat][features])
-
+print("# In[1085]: 3")
 fig = go.Figure(data=go.Heatmap(
     z=z_list,
     x=features,
     y=features))
 # py.iplot(fig, filename='StockPricePrediction_v6d_corr_matrix_lags')
-fig.write_image("./figure/test_v6_lag_" + str(pred_day) + ".pdf")
-
+print(os.getcwd())
+fig.write_image("./figure/test_v6_lag_" + str(pred_day) + ".pdf",validate=False, engine="orca")
+print("# In[1085]: 5")
 print("# In[1086]:")
 
 # Plot correlation for date features only
@@ -1040,7 +1037,7 @@ fig = go.Figure(data=go.Heatmap(
     x=features,
     y=features))
 # py.iplot(fig, filename='StockPricePrediction_v6d_corr_matrix_dates')
-fig.write_image("./figure/test_v6_corr_matrix_dates_" + str(pred_day) + ".pdf")
+fig.write_image("./figure/test_v6_corr_matrix_dates_" + str(pred_day) + ".pdf",validate=False, engine="orca")
 
 # # Split into train, validation, test
 
@@ -1051,6 +1048,7 @@ print("Predicting on day %d, date %s, with forecast horizon H = %d" % (pred_day,
 print("# In[1088]:")
 
 for pred_day in pred_day_list:
+    print("############################################################################")
     train = df[pred_day - train_val_size:pred_day - val_size].copy()
     val = df[pred_day - val_size:pred_day].copy()
     train_val = df[pred_day - train_val_size:pred_day].copy()
@@ -1120,7 +1118,8 @@ for pred_day in pred_day_list:
     # fig.update_xaxes(range=['2017-10-16', '2018-11-12'])
     # fig.update_yaxes(range=[127, 157])
     # py.iplot(fig, filename='StockPricePrediction_v6d_xgboost_val')
-    fig.write_image("./figure/test_v6_xgboost_val_" + str(pred_day) + ".pdf")
+    print("# In[1090]:")
+    fig.write_image("./figure/test_v6_xgboost_val_" + str(pred_day) + ".pdf", validate=False, engine="orca")
 
     print("# In[1091]:")
 
@@ -1174,7 +1173,7 @@ for pred_day in pred_day_list:
     fig.update_layout(yaxis=dict(title='USD'),
                       xaxis=dict(title='date'))
 
-    fig.write_image("./figure/test_v6_xgboost_test_predictions_" + str(pred_day) + ".pdf")
+    fig.write_image("./figure/test_v6_xgboost_test_predictions_" + str(pred_day) + ".pdf", validate=False, engine="orca")
 
     print("# In[1093]:")
 
@@ -1195,7 +1194,7 @@ for pred_day in pred_day_list:
     print("# In[1095]:")
 
     param_label = 'n_estimators'
-    param_list = range(1, 61, 2)
+    param_list = range(30, 61, 1)
     # param_list = range(30, 51, 1)
     # param_list = range(42, 56, 1)
     # param_list = [42, 44, 47]
@@ -1261,7 +1260,7 @@ for pred_day in pred_day_list:
     matplotlib.rcParams.update({'font.size': 14})
     plt.legend(legend_list, loc='center left', bbox_to_anchor=(1.0, 0.5))  # positions legend outside figure
 
-    fig.write_image("./figure/test_v6_xgboost_param1_" + str(pred_day) + ".pdf")
+    fig.write_image("./figure/test_v6_xgboost_param1_" + str(pred_day) + ".pdf",validate=False, engine="orca")
 
     print("# In[1097]:")
 
@@ -1366,7 +1365,7 @@ for pred_day in pred_day_list:
     matplotlib.rcParams.update({'font.size': 14})
     plt.legend(legend_list, loc='center left', bbox_to_anchor=(1.0, 0.5))  # positions legend outside figure
 
-    fig.write_image("./figure/test_v6_xgboost_param2_" + str(pred_day) + ".pdf")
+    fig.write_image("./figure/test_v6_xgboost_param2_" + str(pred_day) + ".pdf",validate=False, engine="orca")
 
     print("# In[1101]:")
 
@@ -1473,7 +1472,7 @@ for pred_day in pred_day_list:
     matplotlib.rcParams.update({'font.size': 14})
     plt.legend(legend_list, loc='center left', bbox_to_anchor=(1.0, 0.5))  # positions legend outside figure
 
-    fig.write_image("./figure/test_v6_xgboost_param3_" + str(pred_day) + ".pdf")
+    fig.write_image("./figure/test_v6_xgboost_param3_" + str(pred_day) + ".pdf",validate=False, engine="orca")
 
     print("# In[1105]:")
 
@@ -1580,7 +1579,7 @@ for pred_day in pred_day_list:
     matplotlib.rcParams.update({'font.size': 14})
     plt.legend(legend_list, loc='center left', bbox_to_anchor=(1.0, 0.5))  # positions legend outside figure
 
-    fig.write_image("./figure/test_v6_xgboost_param4_" + str(pred_day) + ".pdf")
+    fig.write_image("./figure/test_v6_xgboost_param4_" + str(pred_day) + ".pdf",validate=False, engine="orca")
 
     print("# In[1109]:")
 
@@ -1761,22 +1760,22 @@ for pred_day in pred_day_list:
 
     fig.update_layout(yaxis=dict(title='USD'),
                       xaxis=dict(title='date'))
-    fig.update_xaxes(range=['2017-10-16', '2018-11-12'])
-    fig.update_yaxes(range=[127, 157])
+    #fig.update_xaxes(range=['2017-10-16', '2018-11-12'])
+    #fig.update_yaxes(range=[127, 157])
     # py.iplot(fig, filename='StockPricePrediction_v6d_xgboost_val_aft_tune')
-    fig.write_image("./figure/test_v6_xgboost_val_aft_tune_" + str(pred_day) + ".pdf")
+    fig.write_image("./figure/test_v6_xgboost_val_aft_tune_" + str(pred_day) + ".pdf",validate=False, engine="orca")
 
     print("# In[1113]:")
 
     print("Set param:")
-    n_estimators_opt = 42
-    max_depth_opt = 3
-    learning_rate_opt = 0.4
-    min_child_weight_opt = 9
-    subsample_opt = 0.1
-    colsample_bytree_opt = 0.9
-    colsample_bylevel_opt = 1
-    gamma_opt = 1.3
+    #n_estimators_opt = 42
+    #max_depth_opt = 3
+    #learning_rate_opt = 0.4
+    #min_child_weight_opt = 9
+    #subsample_opt = 0.1
+    #colsample_bytree_opt = 0.9
+    #colsample_bylevel_opt = 1
+    #gamma_opt = 1.3
 
     print("Do prediction on test set")
     test_rmse_aft_tuning, test_mape_aft_tuning, test_mae_aft_tuning, test_accuracy_bef_tuning, est, feature_importances, features = get_error_metrics_one_pred(
@@ -1851,7 +1850,7 @@ for pred_day in pred_day_list:
     fig.update_layout(yaxis=dict(title='USD'),
                       xaxis=dict(title='date'))
 
-    fig.write_image("./figure/test_v6_xgboost_test_set_" + str(pred_day) + ".pdf")
+    fig.write_image("./figure/test_v6_xgboost_test_set_" + str(pred_day) + ".pdf",validate=False, engine="orca")
 
     print("# In[1115]:")
 
@@ -1868,7 +1867,7 @@ for pred_day in pred_day_list:
         y=[item[0] for item in imp[-10:]],
         orientation='h'))
     # py.iplot(fig, filename='StockPricePrediction_v6d_xgboost_imp_scores')
-    fig.write_image("./figure/test_v6_xgboost_imp_scores_" + str(pred_day) + ".pdf")
+    fig.write_image("./figure/test_v6_xgboost_imp_scores_" + str(pred_day) + ".pdf",validate=False, engine="orca")
 
     # ## Tuned params
 
@@ -1891,6 +1890,8 @@ for pred_day in pred_day_list:
     # Put tuned_params into pickle
     pickle.dump(tuned_params,
                 open("./out/v6d_tuned_params_" + df.iloc[pred_day]['date'].strftime("%Y-%m-%d") + ".pickle", "wb"))
+
+    tuned_params.to_csv("./out/v6d_tuned_params_" + df.iloc[pred_day]['date'].strftime("%Y-%m-%d") + ".pickle")
 
     print("# In[1119]:")
 
@@ -2008,6 +2009,7 @@ for date in date_list:
     results_short['MAE'].append(pickle.load(open("./out/v6d_test_mae_aft_tuning_" + date + ".pickle", "rb")))
 
     tuned_params = pickle.load(open("./out/v6d_tuned_params_" + date + ".pickle", "rb"))
+
     for hyperparam in hyperparam_list:
         results_short[hyperparam].append(tuned_params[tuned_params['param'] == hyperparam]['after_tuning'].values[0])
 
@@ -2043,10 +2045,10 @@ for key in ests:
 
 fig.update_layout(yaxis=dict(title='USD'),
                   xaxis=dict(title='date'))
-fig.update_xaxes(range=['2017-01-03', '2018-12-28'])
-fig.update_yaxes(range=[110, 150])
+#fig.update_xaxes(range=['2017-01-03', '2018-12-28'])
+#fig.update_yaxes(range=[110, 150])
 # py.iplot(fig, filename='StockPricePrediction_v6d_xgboost_predictions')
-fig.write_image("./figure/test_v6_xgboost_predictions_" + str(pred_day) + ".pdf")
+fig.write_image("./figure/test_v6_xgboost_predictions_" + str(pred_day) + ".pdf",validate=False, engine="orca")
 
 print("# In[1129]:")
 
@@ -2072,7 +2074,7 @@ fig.add_trace(go.Scatter(x=list(range(110, 155, 1)),
 fig.update_layout(yaxis=dict(title='forecasts'),
                   xaxis=dict(title='adj_close'))
 # py.iplot(fig, filename='StockPricePrediction_v6d_xgboost_actuals_vs_predictions')
-fig.write_image("./figure/test_v6_xgboost_actuals_vs_predictions._" + str(pred_day) + "pdf")
+fig.write_image("./figure/test_v6_xgboost_actuals_vs_predictions._" + str(pred_day) + "pdf",validate=False, engine="orca")
 
 print("# In[1131]:")
 
