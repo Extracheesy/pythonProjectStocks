@@ -26,6 +26,8 @@ import plotly.graph_objs as go
 import time
 import os
 
+import orca
+
 from collections import defaultdict
 from datetime import date
 # from fastai.tabular import add_datepart
@@ -784,6 +786,66 @@ def get_error_metrics_GS(df,
     return rmse, mape, mae, accuracy, est
 
 
+def remove_row(df,row):
+    df.drop([row], axis=0, inplace=True)
+    return df
+
+
+def set_param_row(pred_day, N, H, RMSE, MAPE, MAE, ACCURACY, n_estimators, max_depth, learning_rate, min_child_weight, subsample, colsample_bytree, colsample_bylevel, gamma):
+
+    row = []
+
+    row.append(pred_day)
+    row.append(N)
+    row.append(H)
+    row.append(RMSE)
+    row.append(MAPE)
+    row.append(MAE)
+    row.append(ACCURACY)
+    row.append(n_estimators)
+    row.append(max_depth)
+    row.append(learning_rate)
+    row.append(min_child_weight)
+    row.append(subsample)
+    row.append(colsample_bytree)
+    row.append(colsample_bylevel)
+    row.append(gamma)
+
+    return row
+
+def addRow(df,ls):
+    """
+    Given a dataframe and a list, append the list as a new row to the dataframe.
+
+    :param df: <DataFrame> The original dataframe
+    :param ls: <list> The new row to be added
+    :return: <DataFrame> The dataframe with the newly appended row
+    """
+
+    numEl = len(ls)
+
+    newRow = pd.DataFrame(np.array(ls).reshape(1,numEl), columns = list(df.columns))
+
+    df = df.append(newRow, ignore_index=True)
+
+    return df
+
+# Plot with plotly
+def plot_df(df, x_col, y_col, x_label, y_label, legend, title, file_name):
+    # Plot adjusted close over time
+    rcParams['figure.figsize'] = 10, 8  # width 10, height 8
+
+    ax = df.plot(x=x_col, y=y_col, style='b-', grid=True)
+    if (len(legend) > 0):
+        ax.legend(['train_scaled'])
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+
+    ax.set_title(title)
+
+    fig = ax.get_figure()
+    fig.savefig(file_name)
+
 # # Load data
 
 print("# In[1073]:")
@@ -807,24 +869,6 @@ print("# In[1074]:")
 df.drop(['open', 'high', 'low', 'close', 'volume'], axis=1, inplace=True)
 
 print("# In[1075]:")
-
-
-# Plot with plotly
-def plot_df(df, x_col, y_col, x_label, y_label, legend, title, file_name):
-    # Plot adjusted close over time
-    rcParams['figure.figsize'] = 10, 8  # width 10, height 8
-
-    ax = df.plot(x=x_col, y=y_col, style='b-', grid=True)
-    if (len(legend) > 0):
-        ax.legend(['train_scaled'])
-    ax.set_xlabel(x_label)
-    ax.set_ylabel(y_label)
-
-    ax.set_title(title)
-
-    fig = ax.get_figure()
-    fig.savefig(file_name)
-
 
 plot_df(df, 'date', 'adj_close', 'date', 'USD', [], "no title", './figure/test_v6_1.pdf')
 
@@ -998,15 +1042,7 @@ corr_matrix = df_lags[features].corr()
 z_list = []
 for feat in features:
     z_list.append(corr_matrix.loc[:, feat][features])
-print("# In[1085]: 3")
-fig = go.Figure(data=go.Heatmap(
-    z=z_list,
-    x=features,
-    y=features))
-# py.iplot(fig, filename='StockPricePrediction_v6d_corr_matrix_lags')
-print(os.getcwd())
-fig.write_image("./figure/test_v6_lag_" + str(pred_day) + ".pdf",validate=False, engine="orca")
-print("# In[1085]: 5")
+
 print("# In[1086]:")
 
 # Plot correlation for date features only
@@ -1032,23 +1068,36 @@ z_list = []
 for feat in features:
     z_list.append(corr_matrix.loc[:, feat][features])
 
-fig = go.Figure(data=go.Heatmap(
-    z=z_list,
-    x=features,
-    y=features))
-# py.iplot(fig, filename='StockPricePrediction_v6d_corr_matrix_dates')
-fig.write_image("./figure/test_v6_corr_matrix_dates_" + str(pred_day) + ".pdf",validate=False, engine="orca")
-
 # # Split into train, validation, test
 
 print("# In[1087]:")
 
-print("Predicting on day %d, date %s, with forecast horizon H = %d" % (pred_day, df.iloc[pred_day]['date'], H))
+lst_clmn_param = ["pred_day",
+                  "N",
+                  "H",
+                  "RMSE",
+                  "MAPE",
+                  "MAE",
+                  "ACCURACY",
+                  "n_estimators",
+                  "max_depth",
+                  "learning_rate",
+                  "min_child_weight",
+                  "subsample",
+                  "colsample_bytree",
+                  "colsample_bylevel",
+                  "gamma"]
+
+
+
+df_lst_param = pd.DataFrame(columns= lst_clmn_param)
 
 print("# In[1088]:")
 
 for pred_day in pred_day_list:
+
     print("############################################################################")
+    print("Predicting on day %d, date %s, with forecast horizon H = %d" % (pred_day, df.iloc[pred_day]['date'], H))
     train = df[pred_day - train_val_size:pred_day - val_size].copy()
     val = df[pred_day - val_size:pred_day].copy()
     train_val = df[pred_day - train_val_size:pred_day].copy()
@@ -1076,50 +1125,20 @@ for pred_day in pred_day_list:
                                                                                                           colsample_bytree=colsample_bytree,
                                                                                                           colsample_bylevel=colsample_bylevel,
                                                                                                           gamma=gamma)
-    print("RMSE = %0.3f" % rmse_bef_tuning)
-    print("MAPE = %0.3f%%" % mape_bef_tuning)
-    print("MAE = %0.3f%%" % mae_bef_tuning)
-    print("ACCURACY = %0.3f%%" % accuracy_bef_tuning)
+    print("before tuning RMSE = %0.3f" % rmse_bef_tuning)
+    print("before tuning MAPE = %0.3f%%" % mape_bef_tuning)
+    print("before tuning MAE = %0.3f%%" % mae_bef_tuning)
+    print("before tuning ACCURACY = %0.3f%%" % accuracy_bef_tuning)
 
     print("# In[1090]:")
 
-    # Plot validation predictions
-    fig = go.Figure()
+    best_rmse = rmse_bef_tuning
+    best_mape = mape_bef_tuning
+    best_mae = mae_bef_tuning
+    best_accuracy = accuracy_bef_tuning
 
-    # Add traces
-    fig.add_trace(go.Scatter(x=train['date'],
-                             y=train['adj_close'],
-                             mode='lines',
-                             name='train',
-                             line=dict(color='blue')))
-    fig.add_trace(go.Scatter(x=val['date'],
-                             y=val['adj_close'],
-                             mode='lines',
-                             name='validation',
-                             line=dict(color='orange')))
-    fig.add_trace(go.Scatter(x=test['date'],
-                             y=test['adj_close'],
-                             mode='lines',
-                             name='test',
-                             line=dict(color='green')))
-
-    # Plot the predictions
-    n = 0
-    for key in preds_dict:
-        fig.add_trace(go.Scatter(x=train_val[key:key + H]['date'],
-                                 y=preds_dict[key],
-                                 mode='lines',
-                                 name='predictions',
-                                 line=dict(color=colors[n % len(colors)])))
-        n = n + 1
-
-    fig.update_layout(yaxis=dict(title='USD'),
-                      xaxis=dict(title='date'))
-    # fig.update_xaxes(range=['2017-10-16', '2018-11-12'])
-    # fig.update_yaxes(range=[127, 157])
-    # py.iplot(fig, filename='StockPricePrediction_v6d_xgboost_val')
-    print("# In[1090]:")
-    fig.write_image("./figure/test_v6_xgboost_val_" + str(pred_day) + ".pdf", validate=False, engine="orca")
+    row_param = set_param_row(pred_day, N, H, rmse_bef_tuning, mape_bef_tuning, mae_bef_tuning, accuracy_bef_tuning, n_estimators, max_depth, learning_rate, min_child_weight, subsample, colsample_bytree, colsample_bylevel, gamma)
+    df_lst_param = addRow(df_lst_param, row_param)
 
     print("# In[1091]:")
 
@@ -1139,41 +1158,31 @@ for pred_day in pred_day_list:
         colsample_bylevel=colsample_bylevel,
         gamma=gamma)
 
-    print("RMSE = %0.3f" % test_rmse_bef_tuning)
-    print("MAPE = %0.3f%%" % test_mape_bef_tuning)
-    print("MAE = %0.3f" % test_mae_bef_tuning)
-    print("ACCURACY = %0.3f" % test_accuracy_bef_tuning)
+    print("test set RMSE = %0.3f" % test_rmse_bef_tuning)
+    print("test set MAPE = %0.3f%%" % test_mape_bef_tuning)
+    print("test set MAE = %0.3f" % test_mae_bef_tuning)
+    print("test set ACCURACY = %0.3f" % test_accuracy_bef_tuning)
+
+    save_row = False
+    if (test_rmse_bef_tuning <= best_rmse):
+        best_rmse = test_rmse_bef_tuning
+        save_row = True
+    if (test_mape_bef_tuning <= best_mape):
+        best_mape = test_mape_bef_tuning
+        save_row = True
+    if (test_mae_bef_tuning <= best_mae):
+        best_mae = test_mae_bef_tuning
+        save_row = True
+    if (test_accuracy_bef_tuning >= best_accuracy):
+        best_accuracy = test_accuracy_bef_tuning
+        save_row = True
+
+    if(save_row == True):
+        row_param = set_param_row(pred_day, N, H, test_rmse_bef_tuning, test_mape_bef_tuning, test_mae_bef_tuning, test_accuracy_bef_tuning,
+                                  n_estimators, max_depth, learning_rate, min_child_weight, subsample, colsample_bytree, colsample_bylevel, gamma)
+        df_lst_param = addRow(df_lst_param, row_param)
 
     print("# In[1092]:")
-
-    # Plot test predictions
-    fig = go.Figure()
-
-    # Add traces
-    fig.add_trace(go.Scatter(x=train['date'],
-                             y=train['adj_close'],
-                             mode='lines',
-                             name='train',
-                             line=dict(color='blue')))
-    fig.add_trace(go.Scatter(x=val['date'],
-                             y=val['adj_close'],
-                             mode='lines',
-                             name='validation',
-                             line=dict(color='orange')))
-    fig.add_trace(go.Scatter(x=test['date'],
-                             y=test['adj_close'],
-                             mode='lines',
-                             name='test',
-                             line=dict(color='green')))
-    fig.add_trace(go.Scatter(x=test[:H]['date'],
-                             y=est,
-                             mode='lines',
-                             name='predictions',
-                             line=dict(color='red')))
-    fig.update_layout(yaxis=dict(title='USD'),
-                      xaxis=dict(title='date'))
-
-    fig.write_image("./figure/test_v6_xgboost_test_predictions_" + str(pred_day) + ".pdf", validate=False, engine="orca")
 
     print("# In[1093]:")
 
@@ -1203,432 +1212,143 @@ for pred_day in pred_day_list:
     param2_list = [2, 3, 4, 5, 6, 7, 8, 9]
     # param2_list = [3, 7, 9]
 
+    param3_label = 'learning_rate'
+    param3_list = [0.0001, 0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.3]
+    #param_list = [0.1, 0.2, 0.3, 0.4, 0.5]
+    # param_list = [0.01, 0.2, 0.4]
+    # param_list = [0.2, 0.4]
+
+    param4_label = 'min_child_weight'
+    param4_list = range(5, 25, 1)
+    # param2_list = [9, 11]
+
+    param5_label = 'subsample'
+    param5_list = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    # param_list = [0.1, 0.2, 0.3, 0.4]
+    # param_list = [0.1, 0.3, 0.4, 0.5, 0.6]
+    # param_list = [0.1, 0.5]
+
+    param6_label = 'gamma'
+    param6_list = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.3, 1.5]
+    # param2_list = [0, 0.5, 1, 1.3, 1.5]
+    # param2_list = [0, 0.5, 1, 1.3, 1.5]
+
+    param7_label = 'colsample_bytree'
+    #param7_list = [0.5, 0.9, 1]
+    param7_list = [0.5, 0.8, 0.9, 1]
+    #param7_list = [0.5, 1]
+
+    param8_label = 'colsample_bylevel'
+    param8_list = [0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    #param8_list = [1]
+
     error_rate = defaultdict(list)
 
     tic = time.time()
     # for param in tqdm_notebook(param_list):
-    for i in param_list:
-        # param = param_list[i]
-        param = i
-        print("param = ", param)
+    for param in param_list:
         for param2 in param2_list:
-            rmse_mean, mape_mean, mae_mean, accuracy_mean, _ = get_error_metrics(train_val,
-                                                                                 train_size,
-                                                                                 N_opt,
-                                                                                 H,
-                                                                                 seed=model_seed,
-                                                                                 n_estimators=param,
-                                                                                 max_depth=param2,
-                                                                                 learning_rate=learning_rate,
-                                                                                 min_child_weight=min_child_weight,
-                                                                                 subsample=subsample,
-                                                                                 colsample_bytree=colsample_bytree,
-                                                                                 colsample_bylevel=colsample_bylevel,
-                                                                                 gamma=gamma)
+            for param3 in param3_list:
+                for param4 in param4_list:
+                    for param5 in param5_list:
+                        for param6 in param6_list:
+                            for param7 in param7_list:
+                                for param8 in param8_list:
 
-            # Collect results
-            error_rate[param_label].append(param)
-            error_rate[param2_label].append(param2)
-            error_rate['rmse'].append(rmse_mean)
-            error_rate['mape'].append(mape_mean)
-            error_rate['mae'].append(mae_mean)
-            error_rate['accuracy'].append(accuracy_mean)
+                                    rmse_mean, mape_mean, mae_mean, accuracy_mean, _ = get_error_metrics(train_val,
+                                                                                                         train_size,
+                                                                                                         N_opt,
+                                                                                                         H,
+                                                                                                         seed=model_seed,
+                                                                                                         n_estimators=param,
+                                                                                                         max_depth=param2,
+                                                                                                         learning_rate=param3,
+                                                                                                         min_child_weight=param4,
+                                                                                                         subsample=param5,
+                                                                                                         colsample_bytree=param7,
+                                                                                                         colsample_bylevel=param8,
+                                                                                                         gamma=param6)
+
+                                    # Collect results
+                                    error_rate[param_label].append(param)
+                                    error_rate[param2_label].append(param2)
+                                    error_rate[param3_label].append(param3)
+                                    error_rate[param4_label].append(param4)
+                                    error_rate[param5_label].append(param5)
+                                    error_rate[param6_label].append(param6)
+                                    error_rate[param7_label].append(param7)
+                                    error_rate[param8_label].append(param8)
+                                    error_rate['rmse'].append(rmse_mean)
+                                    error_rate['mape'].append(mape_mean)
+                                    error_rate['mae'].append(mae_mean)
+                                    error_rate['accuracy'].append(accuracy_mean)
 
     error_rate = pd.DataFrame(error_rate)
+
+    error_rate.to_cvs("error_rate.csv", index=true)
+
     toc = time.time()
     print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
 
     error_rate
 
     print("# In[1096]:")
-
-    # Plot performance versus params
-    rcParams['figure.figsize'] = 10, 8  # width 10, height 8
-    temp = error_rate[error_rate[param2_label] == param2_list[0]]
-    ax = temp.plot(x=param_label, y='rmse', style='bs-', grid=True)
-    legend_list = [param2_label + '_' + str(param2_list[0])]
-
-    color_list = ['r', 'g', 'k', 'y', 'm', 'c', '0.75']
-    for i in range(1, len(param2_list)):
-        temp = error_rate[error_rate[param2_label] == param2_list[i]]
-        ax = temp.plot(x=param_label, y='rmse', color=color_list[i % len(color_list)], marker='s', grid=True, ax=ax)
-        legend_list.append(param2_label + '_' + str(param2_list[i]))
-
-    ax.set_xlabel(param_label)
-    ax.set_ylabel("RMSE")
-    # ax.set_ylim([0, 20])
-    matplotlib.rcParams.update({'font.size': 14})
-    plt.legend(legend_list, loc='center left', bbox_to_anchor=(1.0, 0.5))  # positions legend outside figure
-
-    fig.write_image("./figure/test_v6_xgboost_param1_" + str(pred_day) + ".pdf",validate=False, engine="orca")
-
     print("# In[1097]:")
 
     n_estimators_opt_param = []
     max_depth_opt_param = []
+    learning_rate_opt_param = []
+    min_child_weight_opt_param = []
+    subsample_opt_param = []
+    gamma_opt_param = []
+    colsample_bytree_opt_param = []
+    colsample_bylevel_opt_param = []
     # Get optimum value for param and param2, using RMSE
     temp = error_rate[error_rate['rmse'] == error_rate['rmse'].min()]
-    n_estimators_opt = temp['n_estimators'].values[0]
-    max_depth_opt = temp['max_depth'].values[0]
     print("min RMSE = %0.3f" % error_rate['rmse'].min())
-    print("optimum params = ")
-    print("n_estimators_opt: ", n_estimators_opt, " max_depth_opt: ", max_depth_opt)
-    n_estimators_opt_param.append(n_estimators_opt)
-    max_depth_opt_param.append(max_depth_opt)
+    n_estimators_opt_param.append(temp['n_estimators'].values[0])
+    max_depth_opt_param.append(temp['max_depth'].values[0])
+    learning_rate_opt_param.append(temp['learning_rate'].values[0])
+    min_child_weight_opt_param.append(temp['min_child_weight'].values[0])
+    subsample_opt_param.append(temp['subsample'].values[0])
+    gamma_opt_param.append(temp['gamma'].values[0])
+    colsample_bytree_opt_param.append(temp['colsample_bytree'].values[0])
+    colsample_bylevel_opt_param.append(temp['colsample_bylevel'].values[0])
 
     # Get optimum value for param and param2, using MAPE
     temp = error_rate[error_rate['mape'] == error_rate['mape'].min()]
     print("min MAPE = %0.3f%%" % error_rate['mape'].min())
-    print("optimum params = ")
-    temp['n_estimators'].values[0], temp['max_depth'].values[0]
-    print("n_estimators_opt: ", temp['n_estimators'].values[0], " max_depth_opt: ", temp['max_depth'].values[0])
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
+    learning_rate_opt_param.append(temp['learning_rate'].values[0])
+    min_child_weight_opt_param.append(temp['min_child_weight'].values[0])
+    subsample_opt_param.append(temp['subsample'].values[0])
+    gamma_opt_param.append(temp['gamma'].values[0])
+    colsample_bytree_opt_param.append(temp['colsample_bytree'].values[0])
+    colsample_bylevel_opt_param.append(temp['colsample_bylevel'].values[0])
 
     # Get optimum value for param and param2, using ACCURACY
     temp = error_rate[error_rate['accuracy'] == error_rate['accuracy'].max()]
     print("max ACCURACY = %0.3f%%" % error_rate['accuracy'].max())
-    print("optimum params = ")
-    temp['n_estimators'].values[0], temp['max_depth'].values[0]
-    print("n_estimators_opt: ", temp['n_estimators'].values[0], " max_depth_opt: ", temp['max_depth'].values[0])
-    # ## Tuning learning_rate(default=0.1) and min_child_weight(default=1)
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
+    learning_rate_opt_param.append(temp['learning_rate'].values[0])
+    min_child_weight_opt_param.append(temp['min_child_weight'].values[0])
+    subsample_opt_param.append(temp['subsample'].values[0])
+    gamma_opt_param.append(temp['gamma'].values[0])
+    colsample_bytree_opt_param.append(temp['colsample_bytree'].values[0])
+    colsample_bylevel_opt_param.append(temp['colsample_bylevel'].values[0])
 
     n_estimators_opt_param = list(set(n_estimators_opt_param))
     max_depth_opt_param = list(set(max_depth_opt_param))
-    print("# In[1099]:")
-
-    param_label = 'learning_rate'
-    # param_list = [0.0001, 0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.3]
-    param_list = [0.1, 0.2, 0.3, 0.4, 0.5]
-    # param_list = [0.01, 0.2, 0.4]
-    # param_list = [0.2, 0.4]
-
-    param2_label = 'min_child_weight'
-    # param2_list = range(5, 25, 1)
-    param2_list = range(5, 25, 1)
-    # param2_list = [9, 11]
-
-    error_rate = defaultdict(list)
-
-    tic = time.time()
-    # for param in tqdm_notebook(param_list):
-    for i in range(len(param_list)):
-        param = param_list[i]
-        for param2 in param2_list:
-            rmse_mean, mape_mean, mae_mean, accuracy_mean, _ = get_error_metrics(train_val,
-                                                                                 train_size,
-                                                                                 N_opt,
-                                                                                 H,
-                                                                                 seed=model_seed,
-                                                                                 n_estimators=n_estimators_opt,
-                                                                                 max_depth=max_depth_opt,
-                                                                                 learning_rate=param,
-                                                                                 min_child_weight=param2,
-                                                                                 subsample=subsample,
-                                                                                 colsample_bytree=colsample_bytree,
-                                                                                 colsample_bylevel=colsample_bylevel,
-                                                                                 gamma=gamma)
-
-            # Collect results
-            error_rate[param_label].append(param)
-            error_rate[param2_label].append(param2)
-            error_rate['rmse'].append(rmse_mean)
-            error_rate['mape'].append(mape_mean)
-            error_rate['mae'].append(mae_mean)
-            error_rate['accuracy'].append(accuracy_mean)
-
-    error_rate = pd.DataFrame(error_rate)
-    toc = time.time()
-    print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
-
-    error_rate
-
-    print("# In[1100]:")
-
-    # Plot performance versus params
-    rcParams['figure.figsize'] = 10, 8  # width 10, height 8
-    temp = error_rate[error_rate[param2_label] == param2_list[0]]
-    ax = temp.plot(x=param_label, y='rmse', style='bs-', grid=True)
-    legend_list = [param2_label + '_' + str(param2_list[0])]
-
-    color_list = ['r', 'g', 'k', 'y', 'm', 'c', '0.75']
-    for i in range(1, len(param2_list)):
-        temp = error_rate[error_rate[param2_label] == param2_list[i]]
-        ax = temp.plot(x=param_label, y='rmse', color=color_list[i % len(color_list)], marker='s', grid=True, ax=ax)
-        legend_list.append(param2_label + '_' + str(param2_list[i]))
-
-    ax.set_xlabel(param_label)
-    ax.set_ylabel("RMSE")
-    # ax.set_ylim([0, 4])
-    matplotlib.rcParams.update({'font.size': 14})
-    plt.legend(legend_list, loc='center left', bbox_to_anchor=(1.0, 0.5))  # positions legend outside figure
-
-    fig.write_image("./figure/test_v6_xgboost_param2_" + str(pred_day) + ".pdf",validate=False, engine="orca")
-
-    print("# In[1101]:")
-
-    learning_rate_opt_param = []
-    min_child_weight_opt_param = []
-    # Get optimum value for param and param2, using RMSE
-    temp = error_rate[error_rate['rmse'] == error_rate['rmse'].min()]
-    learning_rate_opt = temp['learning_rate'].values[0]
-    min_child_weight_opt = temp['min_child_weight'].values[0]
-    print("min RMSE = %0.3f" % error_rate['rmse'].min())
-    print("optimum params = ")
-    learning_rate_opt, min_child_weight_opt
-    print("learning_rate: ", temp['learning_rate'].values[0], " min_child_weight: ", temp['min_child_weight'].values[0])
-    learning_rate_opt_param.append(learning_rate_opt)
-    min_child_weight_opt_param.append(min_child_weight_opt)
-    print("# In[1102]:")
-
-    # Get optimum value for param and param2, using MAPE
-    temp = error_rate[error_rate['mape'] == error_rate['mape'].min()]
-    print("min MAPE = %0.3f%%" % error_rate['mape'].min())
-    print("optimum params = ")
-    temp['learning_rate'].values[0], temp['min_child_weight'].values[0]
-    print("learning_rate: ", temp['learning_rate'].values[0], " min_child_weight: ", temp['min_child_weight'].values[0])
-    learning_rate_opt_param.append(temp['learning_rate'].values[0])
-    min_child_weight_opt_param.append(temp['min_child_weight'].values[0])
-
-    # Get optimum value for param and param2, using MAPE
-    temp = error_rate[error_rate['accuracy'] == error_rate['accuracy'].max()]
-    print("max ACCURACY = %0.3f%%" % error_rate['accuracy'].max())
-    print("optimum params = ")
-    temp['learning_rate'].values[0], temp['min_child_weight'].values[0]
-    print("learning_rate: ", temp['learning_rate'].values[0], " min_child_weight: ", temp['min_child_weight'].values[0])
-    learning_rate_opt_param.append(temp['learning_rate'].values[0])
-    min_child_weight_opt_param.append(temp['min_child_weight'].values[0])
-
     learning_rate_opt_param = list(set(learning_rate_opt_param))
     min_child_weight_opt_param = list(set(min_child_weight_opt_param))
-    # ## Tuning XGBoost - subsample(default=1) and gamma(default=0)
-
-    print("# In[1103]:")
-
-    param_label = 'subsample'
-    # param_list = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
-    # param_list = [0.1, 0.2, 0.3, 0.4]
-    # param_list = [0.1, 0.3, 0.4, 0.5, 0.6]
-    param_list = [0.1, 0.5]
-
-    param2_label = 'gamma'
-    # param2_list = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
-    # param2_list = [0, 0.5, 1, 1.3, 1.5]
-    param2_list = [0, 0.5, 1, 1.3, 1.5]
-
-    error_rate = defaultdict(list)
-
-    tic = time.time()
-    # for param in tqdm_notebook(param_list):
-    for i in range(len(param_list)):
-        param = param_list[i]
-        for param2 in param2_list:
-            rmse_mean, mape_mean, mae_mean, accuracy, _ = get_error_metrics(train_val,
-                                                                            train_size,
-                                                                            N_opt,
-                                                                            H,
-                                                                            seed=model_seed,
-                                                                            n_estimators=n_estimators_opt,
-                                                                            max_depth=max_depth_opt,
-                                                                            learning_rate=learning_rate_opt,
-                                                                            min_child_weight=min_child_weight_opt,
-                                                                            subsample=param,
-                                                                            colsample_bytree=colsample_bytree,
-                                                                            colsample_bylevel=colsample_bylevel,
-                                                                            gamma=param2)
-
-            # Collect results
-            error_rate[param_label].append(param)
-            error_rate[param2_label].append(param2)
-            error_rate['rmse'].append(rmse_mean)
-            error_rate['mape'].append(mape_mean)
-            error_rate['mae'].append(mae_mean)
-            error_rate['accuracy'].append(accuracy_mean)
-
-    error_rate = pd.DataFrame(error_rate)
-    toc = time.time()
-    print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
-
-    error_rate
-
-    print("# In[1104]:")
-
-    # Plot performance versus params
-    rcParams['figure.figsize'] = 10, 8  # width 10, height 8
-    temp = error_rate[error_rate[param2_label] == param2_list[0]]
-    ax = temp.plot(x=param_label, y='rmse', style='bs-', grid=True)
-    legend_list = [param2_label + '_' + str(param2_list[0])]
-
-    color_list = ['r', 'g', 'k', 'y', 'm', 'c', '0.75']
-    for i in range(1, len(param2_list)):
-        temp = error_rate[error_rate[param2_label] == param2_list[i]]
-        ax = temp.plot(x=param_label, y='rmse', color=color_list[i % len(color_list)], marker='s', grid=True, ax=ax)
-        legend_list.append(param2_label + '_' + str(param2_list[i]))
-
-    ax.set_xlabel(param_label)
-    ax.set_ylabel("RMSE")
-    matplotlib.rcParams.update({'font.size': 14})
-    plt.legend(legend_list, loc='center left', bbox_to_anchor=(1.0, 0.5))  # positions legend outside figure
-
-    fig.write_image("./figure/test_v6_xgboost_param3_" + str(pred_day) + ".pdf",validate=False, engine="orca")
-
-    print("# In[1105]:")
-
-    subsample_opt_param = []
-    gamma_opt_param = []
-    # Get optimum value for param and param2, using RMSE
-    temp = error_rate[error_rate['rmse'] == error_rate['rmse'].min()]
-    subsample_opt = temp['subsample'].values[0]
-    gamma_opt = temp['gamma'].values[0]
-    print("min RMSE = %0.3f" % error_rate['rmse'].min())
-    print("optimum params = ")
-    subsample_opt, gamma_opt
-    print("subsample: ", temp['subsample'].values[0], " gamma: ", temp['gamma'].values[0])
-    subsample_opt_param.append(subsample_opt)
-    gamma_opt_param.append(gamma_opt)
-
-    # Get optimum value for param and param2, using MAPE
-    temp = error_rate[error_rate['mape'] == error_rate['mape'].min()]
-    print("min MAPE = %0.3f%%" % error_rate['mape'].min())
-    print("optimum params = ")
-    temp['subsample'].values[0], temp['gamma'].values[0]
-    subsample_opt = temp['subsample'].values[0]
-    gamma_opt = temp['gamma'].values[0]
-    subsample_opt_param.append(subsample_opt)
-    gamma_opt_param.append(gamma_opt)
-    print("subsample: ", temp['subsample'].values[0], " gamma: ", temp['gamma'].values[0])
-
-    # Get optimum value for param and param2, using ACCURACY
-    temp = error_rate[error_rate['accuracy'] == error_rate['accuracy'].max()]
-    print("max ACCURACY = %0.3f%%" % error_rate['accuracy'].max())
-    print("optimum params = ")
-    temp['subsample'].values[0], temp['gamma'].values[0]
-    print("subsample: ", temp['subsample'].values[0], " gamma: ", temp['gamma'].values[0])
-
-    subsample_opt_param.append(temp['subsample'].values[0])
-    gamma_opt_param.append(temp['gamma'].values[0])
-
     subsample_opt_param = list(set(subsample_opt_param))
     gamma_opt_param = list(set(gamma_opt_param))
-    # ## Tuning colsample_bytree(default=1) and colsample_bylevel(default=1)
-
-    print("# In[1107]:")
-
-    param_label = 'colsample_bytree'
-    # param_list = [0.5, 0.9, 1]
-    # param_list = [0.5, 0.8, 0.9, 1]
-    param_list = [0.5, 1]
-
-    param2_label = 'colsample_bylevel'
-    # param2_list = [0.5, 0.6, 0.7, 0.8, 0.9, 1]
-    param2_list = [1]
-
-    error_rate = defaultdict(list)
-
-    tic = time.time()
-    # for param in tqdm_notebook(param_list):
-    for i in range(len(param_list)):
-        param = param_list[i]
-        for param2 in param2_list:
-            rmse_mean, mape_mean, mae_mean, accuracy_mean, _ = get_error_metrics(train_val,
-                                                                                 train_size,
-                                                                                 N_opt,
-                                                                                 H,
-                                                                                 seed=model_seed,
-                                                                                 n_estimators=n_estimators_opt,
-                                                                                 max_depth=max_depth_opt,
-                                                                                 learning_rate=learning_rate_opt,
-                                                                                 min_child_weight=min_child_weight_opt,
-                                                                                 subsample=subsample_opt,
-                                                                                 colsample_bytree=param,
-                                                                                 colsample_bylevel=param2,
-                                                                                 gamma=gamma_opt)
-
-            # Collect results
-            error_rate[param_label].append(param)
-            error_rate[param2_label].append(param2)
-            error_rate['rmse'].append(rmse_mean)
-            error_rate['mape'].append(mape_mean)
-            error_rate['mae'].append(mae_mean)
-            error_rate['accuracy'].append(accuracy_mean)
-
-    error_rate = pd.DataFrame(error_rate)
-    toc = time.time()
-    print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
-
-    error_rate
-
-    print("# In[1108]:")
-
-    # Plot performance versus params
-    rcParams['figure.figsize'] = 10, 8  # width 10, height 8
-    temp = error_rate[error_rate[param2_label] == param2_list[0]]
-    ax = temp.plot(x=param_label, y='rmse', style='bs-', grid=True)
-    legend_list = [param2_label + '_' + str(param2_list[0])]
-
-    color_list = ['r', 'g', 'k', 'y', 'm', 'c', '0.75']
-    for i in range(1, len(param2_list)):
-        temp = error_rate[error_rate[param2_label] == param2_list[i]]
-        ax = temp.plot(x=param_label, y='rmse', color=color_list[i % len(color_list)], marker='s', grid=True, ax=ax)
-        legend_list.append(param2_label + '_' + str(param2_list[i]))
-
-    ax.set_xlabel(param_label)
-    ax.set_ylabel("RMSE")
-    matplotlib.rcParams.update({'font.size': 14})
-    plt.legend(legend_list, loc='center left', bbox_to_anchor=(1.0, 0.5))  # positions legend outside figure
-
-    fig.write_image("./figure/test_v6_xgboost_param4_" + str(pred_day) + ".pdf",validate=False, engine="orca")
-
-    print("# In[1109]:")
-
-    colsample_bytree_opt_param = []
-    colsample_bylevel_opt_param = []
-
-    # Get optimum value for param and param2, using RMSE
-    temp = error_rate[error_rate['rmse'] == error_rate['rmse'].min()]
-    colsample_bytree_opt = temp['colsample_bytree'].values[0]
-    colsample_bylevel_opt = temp['colsample_bylevel'].values[0]
-    colsample_bytree_opt_param.append(colsample_bytree_opt)
-    colsample_bylevel_opt_param.append(colsample_bylevel_opt)
-    print("min RMSE = %0.3f" % error_rate['rmse'].min())
-    print("optimum params = ")
-    colsample_bytree_opt, colsample_bylevel_opt
-    print("colsample_bytree: ", temp['colsample_bytree'].values[0], " colsample_bylevel: ",
-          temp['colsample_bylevel'].values[0])
-
-    # Get optimum value for param and param2, using MAPE
-    temp = error_rate[error_rate['mape'] == error_rate['mape'].min()]
-    colsample_bytree_opt_param.append(temp['colsample_bytree'].values[0])
-    colsample_bylevel_opt_param.append(temp['colsample_bylevel'].values[0])
-    print("min MAPE = %0.3f%%" % error_rate['mape'].min())
-    print("optimum params = ")
-    temp['colsample_bytree'].values[0], temp['colsample_bylevel'].values[0]
-    print("colsample_bytree: ", temp['colsample_bytree'].values[0], " colsample_bylevel: ",
-          temp['colsample_bylevel'].values[0])
-
-    # Get optimum value for param and param2, using ACCURACY
-    temp = error_rate[error_rate['accuracy'] == error_rate['accuracy'].max()]
-    colsample_bytree_opt_param.append(temp['colsample_bytree'].values[0])
-    colsample_bylevel_opt_param.append(temp['colsample_bylevel'].values[0])
-    print("max ACCURACY = %0.3f%%" % error_rate['accuracy'].max())
-    print("optimum params = ")
-    temp['colsample_bytree'].values[0], temp['colsample_bylevel'].values[0]
-    print("colsample_bytree: ", temp['colsample_bytree'].values[0], " colsample_bylevel: ",
-          temp['colsample_bylevel'].values[0])
-
     colsample_bytree_opt_param = list(set(colsample_bytree_opt_param))
     colsample_bylevel_opt_param = list(set(colsample_bylevel_opt_param))
-    # ## Final model
 
-    print("# In[1111]:")
-
-    print("Get error metrics on validation set after hyperparameter tuning")
-    best_rmse = 0
-    best_mape = 0
-    best_accuracy = 0
-    best_mae = 0
+    print("# In[1099]:")
 
     print("n_estimators_opt_param: ", n_estimators_opt_param)
     print("max_depth_opt_param: ", max_depth_opt_param)
@@ -1639,6 +1359,13 @@ for pred_day in pred_day_list:
     print("colsample_bylevel_opt_param: ", colsample_bylevel_opt_param)
     print("gamma_opt_param: ", gamma_opt_param)
 
+    print("Final model")
+
+    print("# In[1111]:")
+
+    print("Get error metrics on validation set after hyperparameter tuning")
+
+    """
     n_estimators_opt_param: [42]
     max_depth_opt_param: [3]
     learning_rate_opt_param: [0.4]
@@ -1657,6 +1384,7 @@ for pred_day in pred_day_list:
     print("colsample_bytree_opt_param: ", colsample_bytree_opt_param)
     print("colsample_bylevel_opt_param: ", colsample_bylevel_opt_param)
     print("gamma_opt_param: ", gamma_opt_param)
+    """
 
     for n_estimators_opt in n_estimators_opt_param:
         for max_depth_opt in max_depth_opt_param:
@@ -1680,12 +1408,30 @@ for pred_day in pred_day_list:
                                         colsample_bytree=colsample_bytree_opt,
                                         colsample_bylevel=colsample_bylevel_opt,
                                         gamma=gamma_opt)
-                                    if accuracy_aft_tuning > best_accuracy:
+
+                                    save_row = False
+                                    if accuracy_aft_tuning >= best_accuracy:
                                         best_accuracy = accuracy_aft_tuning
-                                        best_rmse = rmse_aft_tuning
-                                        best_mape = mape_aft_tuning
-                                        best_mae = mae_aft_tuning
                                         best_est = preds_dict
+                                        save_row = True
+                                    if rmse_aft_tuning <= best_rmse:
+                                        best_rmse = rmse_aft_tuning
+                                        save_row = True
+                                    if mape_aft_tuning <= best_mape:
+                                        best_mape = mape_aft_tuning
+                                        save_row = True
+                                    if mae_aft_tuning <= best_mae:
+                                        best_mae = mae_aft_tuning
+                                        save_row = True
+
+                                    if (save_row == True):
+                                        row_param = set_param_row(pred_day, N_opt, H, rmse_aft_tuning,
+                                                                  mape_aft_tuning, mae_aft_tuning,
+                                                                  accuracy_aft_tuning,
+                                                                  n_estimators_opt, max_depth_opt, learning_rate_opt,
+                                                                  min_child_weight_opt, subsample_opt, colsample_bytree_opt,
+                                                                  colsample_bylevel_opt, gamma_opt)
+                                        df_lst_param = addRow(df_lst_param, row_param)
                                         # Calculate RMSE
                                         print("tuning: RMSE on test set = %0.3f" % rmse_aft_tuning)
                                         # Calculate MAPE
@@ -1703,10 +1449,13 @@ for pred_day in pred_day_list:
                                         best_colsample_bylevel = colsample_bylevel_opt
                                         best_gamma = gamma_opt
 
-    print("RMSE = %0.3f" % best_rmse)
-    print("MAPE = %0.3f%%" % best_mape)
-    print("MAE = %0.3f" % best_mae)
-    print("ACCURACY = %0.3f" % best_accuracy)
+    print("after tuning RMSE = %0.3f" % best_rmse)
+    print("after tuning MAPE = %0.3f%%" % best_mape)
+    print("after tuning MAE = %0.3f" % best_mae)
+    print("after tuning ACCURACY = %0.3f" % best_accuracy)
+
+    df_lst_param.to_csv("parameters_" + str(pred_day) + ".csv")
+
     preds_dict = best_est
     n_estimators_opt = best_n_estimators
     max_depth_opt = best_max_depth
@@ -1726,44 +1475,9 @@ for pred_day in pred_day_list:
     print("colsample_bylevel_opt: ", best_colsample_bylevel)
     print("gamma_opt: ", best_gamma)
 
+
     print("# In[1112]:")
 
-    # Plot validation predictions
-    fig = go.Figure()
-
-    # Add traces
-    fig.add_trace(go.Scatter(x=train['date'],
-                             y=train['adj_close'],
-                             mode='lines',
-                             name='train',
-                             line=dict(color='blue')))
-    fig.add_trace(go.Scatter(x=val['date'],
-                             y=val['adj_close'],
-                             mode='lines',
-                             name='validation',
-                             line=dict(color='orange')))
-    fig.add_trace(go.Scatter(x=test['date'],
-                             y=test['adj_close'],
-                             mode='lines',
-                             name='test',
-                             line=dict(color='green')))
-
-    # Plot the predictions
-    n = 0
-    for key in preds_dict:
-        fig.add_trace(go.Scatter(x=train_val[key:key + H]['date'],
-                                 y=preds_dict[key],
-                                 mode='lines',
-                                 name='predictions',
-                                 line=dict(color=colors[n % len(colors)])))
-        n = n + 1
-
-    fig.update_layout(yaxis=dict(title='USD'),
-                      xaxis=dict(title='date'))
-    #fig.update_xaxes(range=['2017-10-16', '2018-11-12'])
-    #fig.update_yaxes(range=[127, 157])
-    # py.iplot(fig, filename='StockPricePrediction_v6d_xgboost_val_aft_tune')
-    fig.write_image("./figure/test_v6_xgboost_val_aft_tune_" + str(pred_day) + ".pdf",validate=False, engine="orca")
 
     print("# In[1113]:")
 
@@ -1823,35 +1537,6 @@ for pred_day in pred_day_list:
 
     print("# In[1114]:")
 
-    # Plot test predictions
-    fig = go.Figure()
-
-    # Add traces
-    fig.add_trace(go.Scatter(x=train['date'],
-                             y=train['adj_close'],
-                             mode='lines',
-                             name='train',
-                             line=dict(color='blue')))
-    fig.add_trace(go.Scatter(x=val['date'],
-                             y=val['adj_close'],
-                             mode='lines',
-                             name='validation',
-                             line=dict(color='orange')))
-    fig.add_trace(go.Scatter(x=test['date'],
-                             y=test['adj_close'],
-                             mode='lines',
-                             name='test',
-                             line=dict(color='green')))
-    fig.add_trace(go.Scatter(x=test[:H]['date'],
-                             y=est,
-                             mode='lines',
-                             name='predictions',
-                             line=dict(color='red')))
-    fig.update_layout(yaxis=dict(title='USD'),
-                      xaxis=dict(title='date'))
-
-    fig.write_image("./figure/test_v6_xgboost_test_set_" + str(pred_day) + ".pdf",validate=False, engine="orca")
-
     print("# In[1115]:")
 
     # View a list of the features and their importance scores
@@ -1860,14 +1545,6 @@ for pred_day in pred_day_list:
     imp
 
     print("# In[1116]:")
-
-    # Plot the importance scores as a bar chart
-    fig = go.Figure(go.Bar(
-        x=[item[1] for item in imp[-10:]],
-        y=[item[0] for item in imp[-10:]],
-        orientation='h'))
-    # py.iplot(fig, filename='StockPricePrediction_v6d_xgboost_imp_scores')
-    fig.write_image("./figure/test_v6_xgboost_imp_scores_" + str(pred_day) + ".pdf",validate=False, engine="orca")
 
     # ## Tuned params
 
@@ -1948,6 +1625,8 @@ for pred_day in pred_day_list:
                           "wb"))
 
 print("# In[1125]:")
+
+df_lst_param.to_csv("all_parameters.csv")
 
 # Consolidate results
 # H = 21                         # Forecast horizon, in days. Note there are about 252 trading days in a year
