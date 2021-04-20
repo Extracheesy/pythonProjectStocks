@@ -1202,49 +1202,353 @@ for pred_day in pred_day_list:
 
     print("# In[1095]:")
 
+    error_rate = defaultdict(list)
+
+    n_estimators_opt_param = []
+    max_depth_opt_param = []
+
+
+    param_label  = 'n_estimators'
+    param2_label = 'max_depth'
+    param3_label = 'learning_rate'
+    param4_label = 'min_child_weight'
+    param5_label = 'subsample'
+    param6_label = 'gamma'
+    param7_label = 'colsample_bytree'
+    param8_label = 'colsample_bylevel'
+
     param_label = 'n_estimators'
-    param_list = range(30, 61, 1)
+    param_list = range(40, 61, 1)
     # param_list = range(30, 51, 1)
     # param_list = range(42, 56, 1)
-    # param_list = [42, 44, 47]
-
+    #param_list = [42, 44, 47]
     param2_label = 'max_depth'
     param2_list = [2, 3, 4, 5, 6, 7, 8, 9]
-    # param2_list = [3, 7, 9]
+    #param2_list = [3, 5, 7, 9]
 
+    cpt = 0
+    tic = time.time()
+    # for param in tqdm_notebook(param_list):
+    titi = time.time()
+    for param in param_list:
+        for param2 in param2_list:
+            if (cpt % 10) == 0:
+                print("cpt :", cpt)
+                toto = time.time()
+                print("Tuning loop x10 Minutes taken = {0:.2f}".format((toto - titi) / 60.0))
+            cpt = cpt + 1
+            rmse_mean, mape_mean, mae_mean, accuracy_mean, _ = get_error_metrics(train_val,
+                                                                                 train_size,
+                                                                                 N_opt,
+                                                                                 H,
+                                                                                 seed=model_seed,
+                                                                                 n_estimators=param,
+                                                                                 max_depth=param2,
+                                                                                 learning_rate=learning_rate,
+                                                                                 min_child_weight=min_child_weight,
+                                                                                 subsample=subsample,
+                                                                                 colsample_bytree=colsample_bytree,
+                                                                                 colsample_bylevel=colsample_bylevel,
+                                                                                 gamma=gamma)
+            # Collect results
+            error_rate[param_label].append(param)
+            error_rate[param2_label].append(param2)
+            error_rate[param3_label].append(learning_rate)
+            error_rate[param4_label].append(min_child_weight)
+            error_rate[param5_label].append(subsample)
+            error_rate[param6_label].append(colsample_bytree)
+            error_rate[param7_label].append(colsample_bytree)
+            error_rate[param8_label].append(gamma)
+            error_rate['rmse'].append(rmse_mean)
+            error_rate['mape'].append(mape_mean)
+            error_rate['mae'].append(mae_mean)
+            error_rate['accuracy'].append(accuracy_mean)
+
+    toto = time.time()
+    print("Tuning loop Minutes taken = {0:.2f}".format((toto - titi) / 60.0))
+
+    df_error_rate = pd.DataFrame(error_rate)
+    df_error_rate.to_cvs("error_rate_step1.csv", index=true)
+
+    print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
+
+    # Get optimum value for param and param2, using RMSE
+    temp = error_rate[error_rate['rmse'] == error_rate['rmse'].min()]
+    print("min RMSE = %0.3f" % error_rate['rmse'].min())
+    n_estimators_opt_param.append(temp['n_estimators'].values[0])
+    max_depth_opt_param.append(temp['max_depth'].values[0])
+
+    # Get optimum value for param and param2, using MAPE
+    temp = error_rate[error_rate['mape'] == error_rate['mape'].min()]
+    print("min MAPE = %0.3f%%" % error_rate['mape'].min())
+    n_estimators_opt_param.append(temp['n_estimators'].values[0])
+    max_depth_opt_param.append(temp['max_depth'].values[0])
+
+    # Get optimum value for param and param2, using MAE
+    temp = error_rate[error_rate['mae'] == error_rate['mae'].min()]
+    print("min MAE = %0.3f%%" % error_rate['mae'].min())
+    n_estimators_opt_param.append(temp['n_estimators'].values[0])
+    max_depth_opt_param.append(temp['max_depth'].values[0])
+
+    # Get optimum value for param and param2, using ACCURACY
+    temp = error_rate[error_rate['accuracy'] == error_rate['accuracy'].max()]
+    print("max ACCURACY = %0.3f%%" % error_rate['accuracy'].max())
+    n_estimators_opt_param.append(temp['n_estimators'].values[0])
+    max_depth_opt_param.append(temp['max_depth'].values[0])
+
+    n_estimators_opt_param = list(set(n_estimators_opt_param))
+    max_depth_opt_param = list(set(max_depth_opt_param))
+
+    print("n_estimators_opt_param: ", n_estimators_opt_param)
+    print("max_depth_opt_param: ", max_depth_opt_param)
+
+
+    param_list = n_estimators_opt_param
+    param2_list = max_depth_opt_param
+
+    learning_rate_opt_param = []
+    min_child_weight_opt_param = []
     param3_label = 'learning_rate'
-    param3_list = [0.0001, 0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.3]
+    #param3_list = [0.0001, 0.001, 0.005, 0.01, 0.05, 0.1, 0.2, 0.3]
     #param_list = [0.1, 0.2, 0.3, 0.4, 0.5]
-    # param_list = [0.01, 0.2, 0.4]
+    param3_list = [0.001, 0.01, 0.1, 0.2, 0.4]
     # param_list = [0.2, 0.4]
 
     param4_label = 'min_child_weight'
     param4_list = range(5, 25, 1)
-    # param2_list = [9, 11]
+    #param4_list = [9, 11]
 
+    cpt = 0
+    titi = time.time()
+    # for param in tqdm_notebook(param_list):
+    for param in param_list:
+        for param2 in param2_list:
+            for param3 in param3_list:
+                for param4 in param4_list:
+                    if (cpt % 10) == 0:
+                        print("cpt :", cpt)
+                    cpt = cpt + 1
+                    rmse_mean, mape_mean, mae_mean, accuracy_mean, _ = get_error_metrics(train_val,
+                                                                                         train_size,
+                                                                                         N_opt,
+                                                                                         H,
+                                                                                         seed=model_seed,
+                                                                                         n_estimators=param,
+                                                                                         max_depth=param2,
+                                                                                         learning_rate=param3,
+                                                                                         min_child_weight=param4,
+                                                                                         subsample=subsample,
+                                                                                         colsample_bytree=colsample_bytree,
+                                                                                         colsample_bylevel=colsample_bylevel,
+                                                                                         gamma=gamma)
+                    # Collect results
+                    error_rate[param_label].append(param)
+                    error_rate[param2_label].append(param2)
+                    error_rate[param3_label].append(param3)
+                    error_rate[param4_label].append(param4)
+                    error_rate[param5_label].append(subsample)
+                    error_rate[param6_label].append(colsample_bytree)
+                    error_rate[param7_label].append(colsample_bytree)
+                    error_rate[param8_label].append(gamma)
+                    error_rate['rmse'].append(rmse_mean)
+                    error_rate['mape'].append(mape_mean)
+                    error_rate['mae'].append(mae_mean)
+                    error_rate['accuracy'].append(accuracy_mean)
+
+    toto = time.time()
+    print("Tuning loop Minutes taken = {0:.2f}".format((toto - titi) / 60.0))
+
+    df_error_rate = pd.DataFrame(error_rate)
+    df_error_rate.to_cvs("error_rate2.csv", index=true)
+
+    print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
+
+    # Get optimum value for param and param2, using RMSE
+    temp = error_rate[error_rate['rmse'] == error_rate['rmse'].min()]
+    print("min RMSE = %0.3f" % error_rate['rmse'].min())
+    n_estimators_opt_param.append(temp['n_estimators'].values[0])
+    max_depth_opt_param.append(temp['max_depth'].values[0])
+    learning_rate_opt_param.append(temp['learning_rate'].values[0])
+    min_child_weight_opt_param.append(temp['min_child_weight'].values[0])
+
+    # Get optimum value for param and param2, using MAPE
+    temp = error_rate[error_rate['mape'] == error_rate['mape'].min()]
+    print("min MAPE = %0.3f%%" % error_rate['mape'].min())
+    n_estimators_opt_param.append(temp['n_estimators'].values[0])
+    max_depth_opt_param.append(temp['max_depth'].values[0])
+    learning_rate_opt_param.append(temp['learning_rate'].values[0])
+    min_child_weight_opt_param.append(temp['min_child_weight'].values[0])
+
+    # Get optimum value for param and param2, using MAE
+    temp = error_rate[error_rate['mae'] == error_rate['mae'].min()]
+    print("min MAE = %0.3f%%" % error_rate['mae'].min())
+    n_estimators_opt_param.append(temp['n_estimators'].values[0])
+    max_depth_opt_param.append(temp['max_depth'].values[0])
+    n_estimators_opt_param.append(temp['learning_rate'].values[0])
+    max_depth_opt_param.append(temp['min_child_weight'].values[0])
+
+    # Get optimum value for param and param2, using ACCURACY
+    temp = error_rate[error_rate['accuracy'] == error_rate['accuracy'].max()]
+    print("max ACCURACY = %0.3f%%" % error_rate['accuracy'].max())
+    n_estimators_opt_param.append(temp['n_estimators'].values[0])
+    max_depth_opt_param.append(temp['max_depth'].values[0])
+    learning_rate_opt_param.append(temp['learning_rate'].values[0])
+    min_child_weight_opt_param.append(temp['min_child_weight'].values[0])
+
+    n_estimators_opt_param = list(set(n_estimators_opt_param))
+    max_depth_opt_param = list(set(max_depth_opt_param))
+    learning_rate_opt_param = list(set(learning_rate_opt_param))
+    min_child_weight_opt_param = list(set(min_child_weight_opt_param))
+
+    print("n_estimators_opt_param: ", n_estimators_opt_param)
+    print("max_depth_opt_param: ", max_depth_opt_param)
+    print("learning_rate_opt_param: ", learning_rate_opt_param)
+    print("min_child_weight_opt_param: ", min_child_weight_opt_param)
+
+    param_list = n_estimators_opt_param
+    param2_list = max_depth_opt_param
+    param3_list = learning_rate_opt_param
+    param4_list = min_child_weight_opt_param
+
+    subsample_opt_param = []
+    gamma_opt_param = []
     param5_label = 'subsample'
     param5_list = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
-    # param_list = [0.1, 0.2, 0.3, 0.4]
-    # param_list = [0.1, 0.3, 0.4, 0.5, 0.6]
-    # param_list = [0.1, 0.5]
+    #param5_list = [0.1, 0.2, 0.3, 0.4]
+    #param5_list = [0.1, 0.2, 0.4, 0.5, 0.6]
+    #param_list = [0.1, 0.5]
 
     param6_label = 'gamma'
-    param6_list = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.3, 1.5]
+    #param6_list = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.3, 1.5]
     # param2_list = [0, 0.5, 1, 1.3, 1.5]
-    # param2_list = [0, 0.5, 1, 1.3, 1.5]
+    param6_list = [0, 0.5, 1, 1.3, 1.5]
 
+    cpt = 0
+    titi = time.time()
+    # for param in tqdm_notebook(param_list):
+    for param in param_list:
+        for param2 in param2_list:
+            for param3 in param3_list:
+                for param4 in param4_list:
+                    for param5 in param3_list:
+                        for param6 in param4_list:
+                            if(cpt % 10) == 0:
+                                print("cpt :", cpt)
+                            cpt = cpt + 1
+                            rmse_mean, mape_mean, mae_mean, accuracy_mean, _ = get_error_metrics(train_val,
+                                                                                                 train_size,
+                                                                                                 N_opt,
+                                                                                                 H,
+                                                                                                 seed=model_seed,
+                                                                                                 n_estimators=param,
+                                                                                                 max_depth=param2,
+                                                                                                 learning_rate=param3,
+                                                                                                 min_child_weight=param4,
+                                                                                                 subsample=param5,
+                                                                                                 colsample_bytree=colsample_bytree,
+                                                                                                 colsample_bylevel=colsample_bylevel,
+                                                                                                 gamma=param6)
+                            # Collect results
+                            error_rate[param_label].append(param)
+                            error_rate[param2_label].append(param2)
+                            error_rate[param3_label].append(param3)
+                            error_rate[param4_label].append(param4)
+                            error_rate[param5_label].append(param5)
+                            error_rate[param6_label].append(colsample_bytree)
+                            error_rate[param7_label].append(colsample_bytree)
+                            error_rate[param8_label].append(param6)
+                            error_rate['rmse'].append(rmse_mean)
+                            error_rate['mape'].append(mape_mean)
+                            error_rate['mae'].append(mae_mean)
+                            error_rate['accuracy'].append(accuracy_mean)
+
+                            toto = time.time()
+                            print("Tuning loop Minutes taken = {0:.2f}".format((toto - titi) / 60.0))
+
+
+    df_error_rate = pd.DataFrame(error_rate)
+    df_error_rate.to_cvs("error_rate3.csv", index=true)
+
+    toc = time.time()
+    print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
+
+    # Get optimum value for param and param2, using RMSE
+    temp = error_rate[error_rate['rmse'] == error_rate['rmse'].min()]
+    print("min RMSE = %0.3f" % error_rate['rmse'].min())
+    n_estimators_opt_param.append(temp['n_estimators'].values[0])
+    max_depth_opt_param.append(temp['max_depth'].values[0])
+    learning_rate_opt_param.append(temp['learning_rate'].values[0])
+    min_child_weight_opt_param.append(temp['min_child_weight'].values[0])
+    subsample_opt_param.append(temp['subsample'].values[0])
+    gamma_opt_param.append(temp['gamma'].values[0])
+
+    # Get optimum value for param and param2, using MAPE
+    temp = error_rate[error_rate['mape'] == error_rate['mape'].min()]
+    print("min MAPE = %0.3f%%" % error_rate['mape'].min())
+    n_estimators_opt_param.append(temp['n_estimators'].values[0])
+    max_depth_opt_param.append(temp['max_depth'].values[0])
+    learning_rate_opt_param.append(temp['learning_rate'].values[0])
+    min_child_weight_opt_param.append(temp['min_child_weight'].values[0])
+    subsample_opt_param.append(temp['subsample'].values[0])
+    gamma_opt_param.append(temp['gamma'].values[0])
+
+    # Get optimum value for param and param2, using MAPE
+    temp = error_rate[error_rate['mae'] == error_rate['mae'].min()]
+    print("min MAE = %0.3f%%" % error_rate['mae'].min())
+    n_estimators_opt_param.append(temp['n_estimators'].values[0])
+    max_depth_opt_param.append(temp['max_depth'].values[0])
+    learning_rate_opt_param.append(temp['learning_rate'].values[0])
+    min_child_weight_opt_param.append(temp['min_child_weight'].values[0])
+    subsample_opt_param.append(temp['subsample'].values[0])
+    gamma_opt_param.append(temp['gamma'].values[0])
+
+    # Get optimum value for param and param2, using ACCURACY
+    temp = error_rate[error_rate['accuracy'] == error_rate['accuracy'].max()]
+    print("max ACCURACY = %0.3f%%" % error_rate['accuracy'].max())
+    n_estimators_opt_param.append(temp['n_estimators'].values[0])
+    max_depth_opt_param.append(temp['max_depth'].values[0])
+    learning_rate_opt_param.append(temp['learning_rate'].values[0])
+    min_child_weight_opt_param.append(temp['min_child_weight'].values[0])
+    subsample_opt_param.append(temp['subsample'].values[0])
+    gamma_opt_param.append(temp['gamma'].values[0])
+
+    n_estimators_opt_param = list(set(n_estimators_opt_param))
+    max_depth_opt_param = list(set(max_depth_opt_param))
+    learning_rate_opt_param = list(set(learning_rate_opt_param))
+    min_child_weight_opt_param = list(set(min_child_weight_opt_param))
+    subsample_opt_param = list(set(subsample_opt_param))
+    gamma_opt_param = list(set(gamma_opt_param))
+
+    print("n_estimators_opt_param: ", n_estimators_opt_param)
+    print("max_depth_opt_param: ", max_depth_opt_param)
+    print("learning_rate_opt_param: ", learning_rate_opt_param)
+    print("min_child_weight_opt_param: ", min_child_weight_opt_param)
+    print("subsample_opt_param: ", subsample_opt_param)
+    print("gamma_opt_param: ", gamma_opt_param)
+
+    param_list  = n_estimators_opt_param
+    param2_list = max_depth_opt_param
+    param3_list = learning_rate_opt_param
+    param4_list = min_child_weight_opt_param
+    param5_list = subsample_opt_param
+    param6_list = gamma_opt_param
+
+
+    colsample_bytree_opt_param = []
+    colsample_bylevel_opt_param = []
     param7_label = 'colsample_bytree'
     #param7_list = [0.5, 0.9, 1]
     param7_list = [0.5, 0.8, 0.9, 1]
     #param7_list = [0.5, 1]
 
     param8_label = 'colsample_bylevel'
-    param8_list = [0.5, 0.6, 0.7, 0.8, 0.9, 1]
-    #param8_list = [1]
+    #param8_list = [0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    param8_list = [0.5, 0.8, 1]
 
     error_rate = defaultdict(list)
 
-    tic = time.time()
+    cpt = 0
+    titi = time.time()
     # for param in tqdm_notebook(param_list):
     for param in param_list:
         for param2 in param2_list:
@@ -1254,7 +1558,9 @@ for pred_day in pred_day_list:
                         for param6 in param6_list:
                             for param7 in param7_list:
                                 for param8 in param8_list:
-
+                                    if (cpt % 10) == 0:
+                                        print("cpt :", cpt)
+                                    cpt = cpt + 1
                                     rmse_mean, mape_mean, mae_mean, accuracy_mean, _ = get_error_metrics(train_val,
                                                                                                          train_size,
                                                                                                          N_opt,
@@ -1283,26 +1589,15 @@ for pred_day in pred_day_list:
                                     error_rate['mae'].append(mae_mean)
                                     error_rate['accuracy'].append(accuracy_mean)
 
-    error_rate = pd.DataFrame(error_rate)
+                                    toto = time.time()
+                                    print("Tuning loop Minutes taken = {0:.2f}".format((toto - titi) / 60.0))
 
-    error_rate.to_cvs("error_rate.csv", index=true)
+    df_error_rate = pd.DataFrame(error_rate)
+    df_error_rate.to_cvs("error_rate4.csv", index=true)
 
     toc = time.time()
     print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
 
-    error_rate
-
-    print("# In[1096]:")
-    print("# In[1097]:")
-
-    n_estimators_opt_param = []
-    max_depth_opt_param = []
-    learning_rate_opt_param = []
-    min_child_weight_opt_param = []
-    subsample_opt_param = []
-    gamma_opt_param = []
-    colsample_bytree_opt_param = []
-    colsample_bylevel_opt_param = []
     # Get optimum value for param and param2, using RMSE
     temp = error_rate[error_rate['rmse'] == error_rate['rmse'].min()]
     print("min RMSE = %0.3f" % error_rate['rmse'].min())
@@ -1318,6 +1613,18 @@ for pred_day in pred_day_list:
     # Get optimum value for param and param2, using MAPE
     temp = error_rate[error_rate['mape'] == error_rate['mape'].min()]
     print("min MAPE = %0.3f%%" % error_rate['mape'].min())
+    n_estimators_opt_param.append(temp['n_estimators'].values[0])
+    max_depth_opt_param.append(temp['max_depth'].values[0])
+    learning_rate_opt_param.append(temp['learning_rate'].values[0])
+    min_child_weight_opt_param.append(temp['min_child_weight'].values[0])
+    subsample_opt_param.append(temp['subsample'].values[0])
+    gamma_opt_param.append(temp['gamma'].values[0])
+    colsample_bytree_opt_param.append(temp['colsample_bytree'].values[0])
+    colsample_bylevel_opt_param.append(temp['colsample_bylevel'].values[0])
+
+    # Get optimum value for param and param2, using MAPE
+    temp = error_rate[error_rate['mae'] == error_rate['mae'].min()]
+    print("min MAE = %0.3f%%" % error_rate['mae'].min())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
     learning_rate_opt_param.append(temp['learning_rate'].values[0])
@@ -1348,6 +1655,10 @@ for pred_day in pred_day_list:
     colsample_bytree_opt_param = list(set(colsample_bytree_opt_param))
     colsample_bylevel_opt_param = list(set(colsample_bylevel_opt_param))
 
+
+
+    print("# In[1096]:")
+    print("# In[1097]:")
     print("# In[1099]:")
 
     print("n_estimators_opt_param: ", n_estimators_opt_param)
@@ -1358,6 +1669,9 @@ for pred_day in pred_day_list:
     print("colsample_bytree_opt_param: ", colsample_bytree_opt_param)
     print("colsample_bylevel_opt_param: ", colsample_bylevel_opt_param)
     print("gamma_opt_param: ", gamma_opt_param)
+
+
+
 
     print("Final model")
 
