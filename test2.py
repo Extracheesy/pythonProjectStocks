@@ -1268,7 +1268,7 @@ for pred_day in pred_day_list:
     print("Tuning loop Minutes taken = {0:.2f}".format((toto - titi) / 60.0))
 
     df_error_rate = pd.DataFrame(error_rate)
-    df_error_rate.to_cvs("error_rate_step1.csv", index=true)
+    df_error_rate.to_csv("./output/error_rate_step1.csv")
 
     print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
 
@@ -1359,7 +1359,7 @@ for pred_day in pred_day_list:
     print("Tuning loop Minutes taken = {0:.2f}".format((toto - titi) / 60.0))
 
     df_error_rate = pd.DataFrame(error_rate)
-    df_error_rate.to_cvs("error_rate2.csv", index=true)
+    df_error_rate.to_csv("./output/error_rate2.csv")
 
     print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
 
@@ -1467,7 +1467,7 @@ for pred_day in pred_day_list:
 
 
     df_error_rate = pd.DataFrame(error_rate)
-    df_error_rate.to_cvs("error_rate3.csv", index=true)
+    df_error_rate.to_csv("./output/error_rate3.csv")
 
     toc = time.time()
     print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
@@ -1593,7 +1593,7 @@ for pred_day in pred_day_list:
                                     print("Tuning loop Minutes taken = {0:.2f}".format((toto - titi) / 60.0))
 
     df_error_rate = pd.DataFrame(error_rate)
-    df_error_rate.to_cvs("error_rate4.csv", index=true)
+    df_error_rate.to_csv("./output/error_rate4.csv")
 
     toc = time.time()
     print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
@@ -1768,7 +1768,7 @@ for pred_day in pred_day_list:
     print("after tuning MAE = %0.3f" % best_mae)
     print("after tuning ACCURACY = %0.3f" % best_accuracy)
 
-    df_lst_param.to_csv("parameters_" + str(pred_day) + ".csv")
+    df_lst_param.to_csv("./output/parameters_" + str(pred_day) + ".csv")
 
     preds_dict = best_est
     n_estimators_opt = best_n_estimators
@@ -1940,7 +1940,7 @@ for pred_day in pred_day_list:
 
 print("# In[1125]:")
 
-df_lst_param.to_csv("all_parameters.csv")
+df_lst_param.to_csv("./output/all_parameters.csv")
 
 # Consolidate results
 # H = 21                         # Forecast horizon, in days. Note there are about 252 trading days in a year
