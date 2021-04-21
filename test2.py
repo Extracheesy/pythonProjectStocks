@@ -1230,6 +1230,9 @@ for pred_day in pred_day_list:
     tic = time.time()
     # for param in tqdm_notebook(param_list):
     titi = time.time()
+
+    error_rate = defaultdict(list)
+
     for param in param_list:
         for param2 in param2_list:
             if (cpt % 10) == 0:
@@ -1268,31 +1271,31 @@ for pred_day in pred_day_list:
     print("Tuning loop Minutes taken = {0:.2f}".format((toto - titi) / 60.0))
 
     df_error_rate = pd.DataFrame(error_rate)
-    df_error_rate.to_csv("./output/error_rate_step1.csv")
+    df_error_rate.to_csv("./output/error_rate_step1_" + str(pred_day) + ".csv")
 
-    print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
+    print("Minutes taken = {0:.2f}".format((toto - titi) / 60.0))
 
     # Get optimum value for param and param2, using RMSE
-    temp = error_rate[error_rate['rmse'] == error_rate['rmse'].min()]
-    print("min RMSE = %0.3f" % error_rate['rmse'].min())
+    temp = df_error_rate[df_error_rate['rmse'] == df_error_rate['rmse'].min()]
+    print("min RMSE = %0.3f" % df_error_rate['rmse'].min())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
 
     # Get optimum value for param and param2, using MAPE
-    temp = error_rate[error_rate['mape'] == error_rate['mape'].min()]
-    print("min MAPE = %0.3f%%" % error_rate['mape'].min())
+    temp = df_error_rate[df_error_rate['mape'] == df_error_rate['mape'].min()]
+    print("min MAPE = %0.3f%%" % df_error_rate['mape'].min())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
 
     # Get optimum value for param and param2, using MAE
-    temp = error_rate[error_rate['mae'] == error_rate['mae'].min()]
-    print("min MAE = %0.3f%%" % error_rate['mae'].min())
+    temp = df_error_rate[df_error_rate['mae'] == df_error_rate['mae'].min()]
+    print("min MAE = %0.3f%%" % df_error_rate['mae'].min())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
 
     # Get optimum value for param and param2, using ACCURACY
-    temp = error_rate[error_rate['accuracy'] == error_rate['accuracy'].max()]
-    print("max ACCURACY = %0.3f%%" % error_rate['accuracy'].max())
+    temp = df_error_rate[df_error_rate['accuracy'] == df_error_rate['accuracy'].max()]
+    print("max ACCURACY = %0.3f%%" % df_error_rate['accuracy'].max())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
 
@@ -1320,6 +1323,9 @@ for pred_day in pred_day_list:
 
     cpt = 0
     titi = time.time()
+
+    error_rate = defaultdict(list)
+
     # for param in tqdm_notebook(param_list):
     for param in param_list:
         for param2 in param2_list:
@@ -1359,37 +1365,37 @@ for pred_day in pred_day_list:
     print("Tuning loop Minutes taken = {0:.2f}".format((toto - titi) / 60.0))
 
     df_error_rate = pd.DataFrame(error_rate)
-    df_error_rate.to_csv("./output/error_rate2.csv")
+    df_error_rate.to_csv("./output/error_rate2_" + str(pred_day) + ".csv")
 
-    print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
+    print("Minutes taken = {0:.2f}".format((toto - titi) / 60.0))
 
     # Get optimum value for param and param2, using RMSE
-    temp = error_rate[error_rate['rmse'] == error_rate['rmse'].min()]
-    print("min RMSE = %0.3f" % error_rate['rmse'].min())
+    temp = df_error_rate[df_error_rate['rmse'] == df_error_rate['rmse'].min()]
+    print("min RMSE = %0.3f" % df_error_rate['rmse'].min())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
     learning_rate_opt_param.append(temp['learning_rate'].values[0])
     min_child_weight_opt_param.append(temp['min_child_weight'].values[0])
 
     # Get optimum value for param and param2, using MAPE
-    temp = error_rate[error_rate['mape'] == error_rate['mape'].min()]
-    print("min MAPE = %0.3f%%" % error_rate['mape'].min())
+    temp = df_error_rate[df_error_rate['mape'] == df_error_rate['mape'].min()]
+    print("min MAPE = %0.3f%%" % df_error_rate['mape'].min())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
     learning_rate_opt_param.append(temp['learning_rate'].values[0])
     min_child_weight_opt_param.append(temp['min_child_weight'].values[0])
 
     # Get optimum value for param and param2, using MAE
-    temp = error_rate[error_rate['mae'] == error_rate['mae'].min()]
-    print("min MAE = %0.3f%%" % error_rate['mae'].min())
+    temp = df_error_rate[df_error_rate['mae'] == df_error_rate['mae'].min()]
+    print("min MAE = %0.3f%%" % df_error_rate['mae'].min())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
     n_estimators_opt_param.append(temp['learning_rate'].values[0])
     max_depth_opt_param.append(temp['min_child_weight'].values[0])
 
     # Get optimum value for param and param2, using ACCURACY
-    temp = error_rate[error_rate['accuracy'] == error_rate['accuracy'].max()]
-    print("max ACCURACY = %0.3f%%" % error_rate['accuracy'].max())
+    temp = df_error_rate[df_error_rate['accuracy'] == df_error_rate['accuracy'].max()]
+    print("max ACCURACY = %0.3f%%" % df_error_rate['accuracy'].max())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
     learning_rate_opt_param.append(temp['learning_rate'].values[0])
@@ -1425,13 +1431,16 @@ for pred_day in pred_day_list:
 
     cpt = 0
     titi = time.time()
+
+    error_rate = defaultdict(list)
+
     # for param in tqdm_notebook(param_list):
     for param in param_list:
         for param2 in param2_list:
             for param3 in param3_list:
                 for param4 in param4_list:
-                    for param5 in param3_list:
-                        for param6 in param4_list:
+                    for param5 in param5_list:
+                        for param6 in param6_list:
                             if(cpt % 10) == 0:
                                 print("cpt :", cpt)
                             cpt = cpt + 1
@@ -1467,14 +1476,14 @@ for pred_day in pred_day_list:
 
 
     df_error_rate = pd.DataFrame(error_rate)
-    df_error_rate.to_csv("./output/error_rate3.csv")
+    df_error_rate.to_csv("./output/error_rate3_" + str(pred_day) + ".csv")
 
     toc = time.time()
-    print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
+    print("Minutes taken = {0:.2f}".format((toto - titi) / 60.0))
 
     # Get optimum value for param and param2, using RMSE
-    temp = error_rate[error_rate['rmse'] == error_rate['rmse'].min()]
-    print("min RMSE = %0.3f" % error_rate['rmse'].min())
+    temp = df_error_rate[df_error_rate['rmse'] == df_error_rate['rmse'].min()]
+    print("min RMSE = %0.3f" % df_error_rate['rmse'].min())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
     learning_rate_opt_param.append(temp['learning_rate'].values[0])
@@ -1483,8 +1492,8 @@ for pred_day in pred_day_list:
     gamma_opt_param.append(temp['gamma'].values[0])
 
     # Get optimum value for param and param2, using MAPE
-    temp = error_rate[error_rate['mape'] == error_rate['mape'].min()]
-    print("min MAPE = %0.3f%%" % error_rate['mape'].min())
+    temp = df_error_rate[df_error_rate['mape'] == df_error_rate['mape'].min()]
+    print("min MAPE = %0.3f%%" % df_error_rate['mape'].min())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
     learning_rate_opt_param.append(temp['learning_rate'].values[0])
@@ -1493,8 +1502,8 @@ for pred_day in pred_day_list:
     gamma_opt_param.append(temp['gamma'].values[0])
 
     # Get optimum value for param and param2, using MAPE
-    temp = error_rate[error_rate['mae'] == error_rate['mae'].min()]
-    print("min MAE = %0.3f%%" % error_rate['mae'].min())
+    temp = df_error_rate[df_error_rate['mae'] == df_error_rate['mae'].min()]
+    print("min MAE = %0.3f%%" % df_error_rate['mae'].min())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
     learning_rate_opt_param.append(temp['learning_rate'].values[0])
@@ -1503,8 +1512,8 @@ for pred_day in pred_day_list:
     gamma_opt_param.append(temp['gamma'].values[0])
 
     # Get optimum value for param and param2, using ACCURACY
-    temp = error_rate[error_rate['accuracy'] == error_rate['accuracy'].max()]
-    print("max ACCURACY = %0.3f%%" % error_rate['accuracy'].max())
+    temp = df_error_rate[df_error_rate['accuracy'] == df_error_rate['accuracy'].max()]
+    print("max ACCURACY = %0.3f%%" % df_error_rate['accuracy'].max())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
     learning_rate_opt_param.append(temp['learning_rate'].values[0])
@@ -1593,14 +1602,14 @@ for pred_day in pred_day_list:
                                     print("Tuning loop Minutes taken = {0:.2f}".format((toto - titi) / 60.0))
 
     df_error_rate = pd.DataFrame(error_rate)
-    df_error_rate.to_csv("./output/error_rate4.csv")
+    df_error_rate.to_csv("./output/error_rate4_" + str(pred_day) + ".csv")
 
-    toc = time.time()
-    print("Minutes taken = {0:.2f}".format((toc - tic) / 60.0))
+    toto = time.time()
+    print("Minutes taken = {0:.2f}".format((toto - titi) / 60.0))
 
     # Get optimum value for param and param2, using RMSE
-    temp = error_rate[error_rate['rmse'] == error_rate['rmse'].min()]
-    print("min RMSE = %0.3f" % error_rate['rmse'].min())
+    temp = df_error_rate[df_error_rate['rmse'] == df_error_rate['rmse'].min()]
+    print("min RMSE = %0.3f" % df_error_rate['rmse'].min())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
     learning_rate_opt_param.append(temp['learning_rate'].values[0])
@@ -1611,8 +1620,8 @@ for pred_day in pred_day_list:
     colsample_bylevel_opt_param.append(temp['colsample_bylevel'].values[0])
 
     # Get optimum value for param and param2, using MAPE
-    temp = error_rate[error_rate['mape'] == error_rate['mape'].min()]
-    print("min MAPE = %0.3f%%" % error_rate['mape'].min())
+    temp = df_error_rate[df_error_rate['mape'] == df_error_rate['mape'].min()]
+    print("min MAPE = %0.3f%%" % df_error_rate['mape'].min())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
     learning_rate_opt_param.append(temp['learning_rate'].values[0])
@@ -1623,8 +1632,8 @@ for pred_day in pred_day_list:
     colsample_bylevel_opt_param.append(temp['colsample_bylevel'].values[0])
 
     # Get optimum value for param and param2, using MAPE
-    temp = error_rate[error_rate['mae'] == error_rate['mae'].min()]
-    print("min MAE = %0.3f%%" % error_rate['mae'].min())
+    temp = df_error_rate[df_error_rate['mae'] == df_error_rate['mae'].min()]
+    print("min MAE = %0.3f%%" % df_error_rate['mae'].min())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
     learning_rate_opt_param.append(temp['learning_rate'].values[0])
@@ -1635,8 +1644,8 @@ for pred_day in pred_day_list:
     colsample_bylevel_opt_param.append(temp['colsample_bylevel'].values[0])
 
     # Get optimum value for param and param2, using ACCURACY
-    temp = error_rate[error_rate['accuracy'] == error_rate['accuracy'].max()]
-    print("max ACCURACY = %0.3f%%" % error_rate['accuracy'].max())
+    temp = df_error_rate[df_error_rate['accuracy'] == df_error_rate['accuracy'].max()]
+    print("max ACCURACY = %0.3f%%" % df_error_rate['accuracy'].max())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
     learning_rate_opt_param.append(temp['learning_rate'].values[0])
