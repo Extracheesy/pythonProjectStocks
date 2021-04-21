@@ -1390,7 +1390,7 @@ for pred_day in pred_day_list:
     print("min MAE = %0.3f%%" % df_error_rate['mae'].min())
     n_estimators_opt_param.append(temp['n_estimators'].values[0])
     max_depth_opt_param.append(temp['max_depth'].values[0])
-    n_estimators_opt_param.append(temp['learning_rate'].values[0])
+    learning_rate_opt_param.append(temp['learning_rate'].values[0])
     max_depth_opt_param.append(temp['min_child_weight'].values[0])
 
     # Get optimum value for param and param2, using ACCURACY
@@ -1906,8 +1906,9 @@ for pred_day in pred_day_list:
 
     print("# In[1121]:")
 
-    print("Predicting on day %d, date %s, with forecast horizon H = %d" % (
-    pred_day, df.iloc[pred_day]['date'].strftime("%Y-%m-%d"), H))
+    print("Predicting on day %d, date %s, with forecast horizon H = %d" % (pred_day, df.iloc[pred_day]['date'].strftime("%Y-%m-%d"), H))
+
+    df_lst_param.to_csv("./output/parameters" + str(pred_day) + ".csv")
 
     print("# In[1122]:")
 
